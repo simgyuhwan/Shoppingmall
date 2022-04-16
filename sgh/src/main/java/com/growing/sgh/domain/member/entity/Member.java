@@ -1,6 +1,7 @@
 package com.growing.sgh.domain.member.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Member {
+public class Member extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +30,17 @@ public class Member {
 
     @Embedded
     private PhoneNum phoneNum;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Builder
+    public Member(String email, String password, String nickname, Address address, PhoneNum phoneNum) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.address = address;
+        this.phoneNum = phoneNum;
+        this.role = Role.MEMBER;
+    }
 }
