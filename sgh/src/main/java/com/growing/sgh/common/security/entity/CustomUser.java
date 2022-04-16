@@ -17,7 +17,7 @@ public class CustomUser extends User {
     }
 
     public CustomUser(Member member,Collection<? extends GrantedAuthority> authorities ){
-        super(member.getEmail(), member.getPassword(),
+        super(member.getUsername(), member.getPassword(),
                 authorities);
         this.member = member;
     }
@@ -26,8 +26,8 @@ public class CustomUser extends User {
         return member.getId();
     }
 
-    public String getMemberEmail(){
-        return member.getEmail();
+    public String getUsername(){
+        return member.getUsername();
     }
 
 }

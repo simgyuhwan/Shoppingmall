@@ -10,7 +10,6 @@ import javax.persistence.Embeddable;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PhoneNum {
-
     private String PhoneNum1;
     private String PhoneNum2;
     private String PhoneNum3;

@@ -17,8 +17,8 @@ public class Member extends BaseEntity{
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(nullable = false, unique = true)
+    private String username;
 
     private String password;
 
@@ -35,8 +35,8 @@ public class Member extends BaseEntity{
     private Role role;
 
     @Builder
-    public Member(String email, String password, String nickname, Address address, PhoneNum phoneNum) {
-        this.email = email;
+    public Member(String username, String password, String nickname, Address address, PhoneNum phoneNum) {
+        this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.address = address;
