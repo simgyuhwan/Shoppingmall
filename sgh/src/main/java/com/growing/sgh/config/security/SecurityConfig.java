@@ -1,5 +1,8 @@
 package com.growing.sgh.config.security;
 
+import com.growing.sgh.common.security.CustomUserDetailService;
+import com.growing.sgh.common.security.filter.JwtAuthenticationFilter;
+import com.growing.sgh.common.security.filter.JwtRequestFilter;
 import com.growing.sgh.common.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterAt(new JwtAuthenticationFilter(authenticationManager(),jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtRequestFileter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtRequestFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
@@ -71,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public UserDetailsService customUserDetailService(){
-        return new CachingUserDetailsService();
+        return new CustomUserDetailService();
     }
 
     @Bean
