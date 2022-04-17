@@ -35,6 +35,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     }
     private boolean isEmpty(String header){
-        return header == null | header.length() == 0;
+        return header == null || header.length() == 0;
     }
 }

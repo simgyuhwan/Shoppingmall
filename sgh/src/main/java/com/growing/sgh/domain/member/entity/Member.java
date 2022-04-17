@@ -25,22 +25,21 @@ public class Member extends BaseEntity{
     @Column(nullable = false, unique = true)
     private String nickname;
 
-    @Embedded
-    private Address address;
-
-    @Embedded
-    private PhoneNum phoneNum;
+//    @Embedded
+//    private Address address;
+//
+//    @Embedded
+//    private PhoneNum phoneNum;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Builder
-    public Member(String username, String password, String nickname, Address address, PhoneNum phoneNum) {
+    public Member(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.address = address;
-        this.phoneNum = phoneNum;
+
         this.role = Role.MEMBER;
     }
 }

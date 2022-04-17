@@ -73,7 +73,7 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public boolean validateToken(String jwtToken){
+    public boolean validateTokenExpired(String jwtToken){
         try{
             Jws<Claims> claims = Jwts.parserBuilder()
                     .setSigningKey(getSignKey())

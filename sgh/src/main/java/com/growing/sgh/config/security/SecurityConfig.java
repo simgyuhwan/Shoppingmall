@@ -67,13 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailService())
+        auth.userDetailsService(userDetailService())
                 .passwordEncoder(passwordEncoder());
 
     }
 
     @Bean
-    public UserDetailsService customUserDetailService(){
+    public UserDetailsService userDetailService(){
         return new CustomUserDetailService();
     }
 
