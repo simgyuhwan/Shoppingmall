@@ -2,10 +2,7 @@ package com.growing.sgh.domain.member.service;
 
 import com.growing.sgh.common.exception.*;
 import com.growing.sgh.common.security.provider.JwtTokenProvider;
-import com.growing.sgh.domain.member.dto.ChangePasswordDto;
-import com.growing.sgh.domain.member.dto.SignInRequest;
-import com.growing.sgh.domain.member.dto.SignInResponse;
-import com.growing.sgh.domain.member.dto.SignUpRequest;
+import com.growing.sgh.domain.member.dto.*;
 import com.growing.sgh.domain.member.entity.Member;
 import com.growing.sgh.domain.member.entity.Role;
 import com.growing.sgh.domain.member.repository.MemberRepository;
@@ -38,23 +35,27 @@ public class MemberService {
         return new SignInResponse(token);
     }
 
+    public void changeMemberInfo(ChangeMemberInfo memberInfo, Long memberId){
+        duplicateNickname(memberInfo);
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        member.changeInfo(memberInfo);
+    }
+
     public void changePassword(ChangePasswordDto passwordDto,Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
         validatePassword(passwordDto.getOldPassword(), member);
         member.changePassword(passwordDto.getNwPassword(), passwordEncoder);
     }
 
-    public void modify(Member member) throws Exception {
-
-    }
-
-    public void remove(Long userNo) throws Exception {
-
-    }
 
     private void validatePassword(String password, Member member){
         if(!passwordEncoder.matches(password, member.getPassword()))
             throw new SignInFailureException();
+    }
+
+    private void duplicateNickname(ChangeMemberInfo memberInfo){
+        if(memberRepository.existsByNickname(memberInfo.getNickname()))
+            throw new NicknameAlreadyExistsException(memberInfo.getNickname());
     }
 
     private void validateSignUp(SignUpRequest signUpRequest){

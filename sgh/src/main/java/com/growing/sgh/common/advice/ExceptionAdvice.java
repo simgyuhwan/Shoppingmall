@@ -1,5 +1,6 @@
 package com.growing.sgh.common.advice;
 
+import com.growing.sgh.common.exception.MemberNotFoundException;
 import com.growing.sgh.common.exception.NicknameAlreadyExistsException;
 import com.growing.sgh.common.exception.UsernameAlreadyExistsException;
 import com.growing.sgh.common.response.Response;
@@ -34,5 +35,9 @@ public class ExceptionAdvice {
         return Response.failure(409, e.getMessage() + "은 중복된 닉네임 입니다.");
     }
 
-
+    @ExceptionHandler(MemberNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response MemberNotFoundException(MemberNotFoundException e){
+        return Response.failure(404, "가입된 회원이 아닙니다.");
+    }
 }
