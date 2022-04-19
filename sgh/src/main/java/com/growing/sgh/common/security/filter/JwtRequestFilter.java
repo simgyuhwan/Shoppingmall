@@ -22,19 +22,21 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String header = request.getHeader(TOKEN_HEADER);
+        String token = request.getHeader(TOKEN_HEADER);
 
-        if(isEmpty(header) || !header.startsWith(TOKEN_PREFIX)){
-            filterChain.doFilter(request, response);
-            return;
+        if(validateToken(token)){
+            setAuthentication(token);
         }
 
-        Authentication authentication = jwtTokenProvider.getAuthentication(header);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request,response);
-
     }
-    private boolean isEmpty(String header){
-        return header == null | header.length() == 0;
+
+    private void setAuthentication(String token) {
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    private boolean validateToken(String token){
+        return jwtTokenProvider.validateToken(token);
     }
 }

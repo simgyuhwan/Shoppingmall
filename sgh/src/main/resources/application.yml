@@ -1,12 +1,12 @@
 spring:
   jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      show-sql: true
     properties:
-      hibernate:
-        ddl-auto: create
-        naming:
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        show-sql: true
-        format_sql: true
+      hibernate.format_sql: true
 
   h2:
     console:
@@ -19,4 +19,5 @@ spring:
     password:
 
 jwt:
-  secret_key: n2r5u8x/A%DG-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%CF-J@NcRf
+  secret_key: n2r5u8x/A%DG-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%CF-J@NcRfrknfkjdoiskd
+  token-validity-in-seconds: 86400
