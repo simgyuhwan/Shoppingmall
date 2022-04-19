@@ -1,6 +1,6 @@
 package com.growing.sgh.domain.member.entity;
 
-import com.growing.sgh.domain.member.dto.SignUpDto;
+import com.growing.sgh.domain.member.dto.SignUpRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,18 +37,19 @@ public class Member extends BaseEntity{
     private Role role;
 
     @Builder
-    public Member(String username, String password, String nickname) {
+    public Member(String username, String password, String nickname, Role role) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.role = Role.MEMBER;
+        this.role = role;
     }
 
-    public static Member toEntity(SignUpDto signUpDto, PasswordEncoder passwordEncoder){
+    public static Member toEntity(SignUpRequest signUpRequest, PasswordEncoder passwordEncoder){
         return Member.builder()
-                .username(signUpDto.getUsername())
-                .nickname(signUpDto.getNickname())
-                .password(passwordEncoder.encode(signUpDto.getPassword()))
+                .username(signUpRequest.getUsername())
+                .nickname(signUpRequest.getNickname())
+                .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                .role(Role.MEMBER)
                 .build();
     }
 

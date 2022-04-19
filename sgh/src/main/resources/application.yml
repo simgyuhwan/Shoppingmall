@@ -19,4 +19,5 @@ spring:
     password:
 
 jwt:
-  secret_key: n2r5u8x/A%DG-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%CF-J@NcRf
+  secret_key: n2r5u8x/A%DG-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%CF-J@NcRfrknfkjdoiskd
+  token-validity-in-seconds: 86400

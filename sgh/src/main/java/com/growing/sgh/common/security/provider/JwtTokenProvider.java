@@ -31,7 +31,7 @@ public class JwtTokenProvider {
         String token = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(signKey), SignatureAlgorithm.HS512)
                 .setHeaderParam("typ", SecurityConstants.Token_TYPE)
-                .setExpiration(new Date(System.currentTimeMillis() + 864000000))
+                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(jwtProperties.getTokenValidityInSeconds())))
                 .claim("unm", username)
                 .claim("mid", "" + memberId)
                 .claim("rol", roles)
@@ -39,6 +39,21 @@ public class JwtTokenProvider {
 
         return token;
     }
+    public String createToken(String username, long memberId){
+        byte[] signKey = getSignKey();
+
+        String token = Jwts.builder()
+                .signWith(Keys.hmacShaKeyFor(signKey), SignatureAlgorithm.HS512)
+                .setHeaderParam("typ", SecurityConstants.Token_TYPE)
+                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(jwtProperties.getTokenValidityInSeconds())))
+                .claim("unm", username)
+                .claim("mid", "" + memberId)
+                .claim("rol", "member")
+                .compact();
+
+        return token;
+    }
+
 
     public UsernamePasswordAuthenticationToken getAuthentication(String tokenHeader){
         if(isNotEmpty(tokenHeader)){
@@ -71,6 +86,26 @@ public class JwtTokenProvider {
             }
         }
         return null;
+    }
+
+    public boolean validateToken(String jwtToken){
+        try{
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(getSignKey())
+                    .build().parseClaimsJws(jwtToken);
+            return true;
+        }catch (ExpiredJwtException exception){
+            log.error("Token Expired");
+            return false;
+        }catch (JwtException exception){
+            log.error("Token Tampered");
+            return false;
+        }catch (NullPointerException exception){
+            log.error("Token is null");
+            return false;
+        }catch(Exception e){
+            return false;
+        }
     }
 
     public boolean validateTokenExpired(String jwtToken){

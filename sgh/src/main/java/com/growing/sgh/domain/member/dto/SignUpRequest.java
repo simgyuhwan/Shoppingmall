@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpDto {
+public class SignUpRequest {
 
     @NotBlank(message = "아이디를 입력해주세요.")
     @Size(min = 2, message = "아이디가 너무 짧습니다.")

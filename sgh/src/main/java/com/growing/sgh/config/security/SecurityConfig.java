@@ -3,6 +3,8 @@ package com.growing.sgh.config.security;
 import com.growing.sgh.common.security.CustomUserDetailService;
 import com.growing.sgh.common.security.filter.JwtAuthenticationFilter;
 import com.growing.sgh.common.security.filter.JwtRequestFilter;
+import com.growing.sgh.common.security.handler.JwtAccessDeniedHandler;
+import com.growing.sgh.common.security.handler.JwtAuthenticationEntryPoint;
 import com.growing.sgh.common.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,8 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,7 +48,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtRequestFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler);
+
+        http.authorizeRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/member/**").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Bean
