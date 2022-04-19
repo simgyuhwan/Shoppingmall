@@ -58,4 +58,8 @@ public class Member extends BaseEntity{
                 .build();
     }
 
+    public void changePassword(String nwPassword, PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(nwPassword);
+    }
+
 }

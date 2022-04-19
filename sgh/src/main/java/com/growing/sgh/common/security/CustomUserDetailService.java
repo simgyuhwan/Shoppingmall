@@ -28,20 +28,7 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("===============test====================");
-        System.out.println("===============test====================");
-        System.out.println("===============test====================");
-        System.out.println("username : " + username);
-        System.out.println("===============test====================");
-        System.out.println("===============test====================");
-        System.out.println("===============test====================");
-        System.out.println("===============test====================");
         Member member = memberRepository.findOneByUsername(username).orElseThrow(EntityExistsException::new);
-
-        System.out.println("username : " + member.getUsername());
-        System.out.println("nickname : " + member.getNickname());
-        System.out.println("role : " + member.getRole());
-        System.out.println("password : " + member.getPassword());
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(member.getRole().toString()));
