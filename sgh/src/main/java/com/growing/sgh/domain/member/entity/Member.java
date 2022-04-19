@@ -22,6 +22,9 @@ public class Member extends BaseEntity{
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     private String password;
 
     @Column(name = "nickname",nullable = false, unique = true)
@@ -37,10 +40,11 @@ public class Member extends BaseEntity{
     private Role role;
 
     @Builder
-    public Member(String username, String password, String nickname, Role role) {
+    public Member(String username, String password, String nickname, String email,Role role) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.email = email;
         this.role = role;
     }
 
@@ -49,6 +53,7 @@ public class Member extends BaseEntity{
                 .username(signUpRequest.getUsername())
                 .nickname(signUpRequest.getNickname())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                .email(signUpRequest.getEmail())
                 .role(Role.MEMBER)
                 .build();
     }

@@ -44,8 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(corsConfigurationSource());
         http.csrf().disable();
 
-        http.addFilterAt(new JwtAuthenticationFilter(authenticationManager(),jwtTokenProvider),
-                UsernamePasswordAuthenticationFilter.class)
+        http
+                //.addFilterAt(new JwtAuthenticationFilter(authenticationManager(),jwtTokenProvider),
+                //UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtRequestFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

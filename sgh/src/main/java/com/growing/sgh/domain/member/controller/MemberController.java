@@ -21,9 +21,15 @@ public class MemberController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response signUp(@Validated @RequestBody SignUpRequest signUpReq) {
-        memberService.signUp(signUpReq);
+    public Response signUp(@Validated @RequestBody SignUpRequest req) {
+        memberService.signUp(req);
         return success();
+    }
+
+    @PostMapping("signin")
+    @ResponseStatus(HttpStatus.OK)
+    public Response signin(@Validated @RequestBody SignInRequest req){
+        return success(memberService.signIn(req));
     }
 
 
