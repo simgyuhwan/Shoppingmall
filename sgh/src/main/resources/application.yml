@@ -1,12 +1,12 @@
 spring:
   jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      show-sql: true
     properties:
-      hibernate:
-        ddl-auto: create
-        naming:
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        show-sql: true
-        format_sql: true
+      hibernate.format_sql: true
 
   h2:
     console:
