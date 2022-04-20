@@ -1,5 +1,6 @@
 package com.growing.sgh.domain.item.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.entity.ItemSellStatus;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class ItemRegisterDto {
     @NotBlank(message = "상품 상세 정보는 필수 입력 값입니다.")
     private String description;
 
+    @JsonProperty("itemSellStatus")
     private ItemSellStatus itemSellStatus;
 
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>();

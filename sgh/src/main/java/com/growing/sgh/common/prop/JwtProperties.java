@@ -1,4 +1,4 @@
-package com.growing.sgh.common.security.prop;
+package com.growing.sgh.common.prop;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
