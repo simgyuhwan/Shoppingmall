@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,28 +37,25 @@ public class Member extends BaseEntity{
 
     @Column(name = "address")
     private String address;
-//    @Embedded
-//    private Address address;
-//
-//    @Embedded
-//    private PhoneNum phoneNum;
 
     @Column(name = "phoneNum")
     private String phoneNum;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
-    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="member_id")
+    private Collection<Role> authorities = new ArrayList<>();
+
     @Builder
-    public Member(String username, String password, String nickname, String email, String address,String phoneNum, Role role) {
+    public Member(String username, String password, String nickname, String email, String address,String phoneNum) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
         this.address = address;
         this.phoneNum = phoneNum;
-        this.role = role;
     }
+
+
     public static Member toEntity(SignUpRequest signUpRequest, PasswordEncoder passwordEncoder){
         return Member.builder()
                 .username(signUpRequest.getUsername())
@@ -63,7 +64,6 @@ public class Member extends BaseEntity{
                 .email(signUpRequest.getEmail())
                 .address(signUpRequest.getAddress())
                 .phoneNum(signUpRequest.getPhoneNum())
-                .role(Role.MEMBER)
                 .build();
     }
 
@@ -76,4 +76,9 @@ public class Member extends BaseEntity{
         this.address = memberInfo.getNickname();
         this.phoneNum = memberInfo.getPhoneNum();
     }
+
+    public void addAuth(Role role){
+        this.authorities.add(role);
+    }
+
 }

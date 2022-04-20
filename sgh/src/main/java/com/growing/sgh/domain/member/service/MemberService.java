@@ -5,13 +5,12 @@ import com.growing.sgh.common.security.provider.JwtTokenProvider;
 import com.growing.sgh.domain.member.dto.*;
 import com.growing.sgh.domain.member.entity.Member;
 import com.growing.sgh.domain.member.entity.Role;
+import com.growing.sgh.domain.member.entity.RoleType;
 import com.growing.sgh.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 
 @Service
 @Transactional
@@ -21,10 +20,12 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
 
-
     public void signUp(SignUpRequest req){
         validateSignUp(req);
-        memberRepository.save(Member.toEntity(req, passwordEncoder));
+        Member member = Member.toEntity(req, passwordEncoder);
+
+        member.addAuth(new Role(member.getId(), RoleType.MEMBER));
+        memberRepository.save(member);
     }
 
     @Transactional(readOnly = true)
