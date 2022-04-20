@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangeMemberInfo {
+public class ChangeMemberInfoDto {
     @NotBlank(message = "닉네임을 입력해주세요.")
     @Size(min = 2, message = "닉네임이 너무 짧습니다.")
     @Pattern(regexp = "^[A-Za-z가-힣]+$", message = "닉네임은 한글 또는 알파벳만 입력해주세요.")

@@ -1,10 +1,8 @@
 package com.growing.sgh.domain.item.entity;
 
+import com.growing.sgh.domain.item.dto.ItemRegisterDto;
 import com.growing.sgh.domain.member.entity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -23,7 +21,10 @@ public class Item extends BaseEntity {
     private String itemNm;
 
     @Column(nullable = false)
-    private int stockNumber;
+    private Integer price;
+
+    @Column(nullable = false)
+    private Integer stockNumber;
 
     @Lob
     @Column(nullable = false)
@@ -31,6 +32,16 @@ public class Item extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;
+
+    @Builder
+    public Item(String itemNm,Integer price ,Integer stockNumber, String description, ItemSellStatus itemSellStatus){
+        this.itemNm = itemNm;
+        this.price = price;
+        this.stockNumber = stockNumber;
+        this.description = description;
+        this.itemSellStatus = itemSellStatus;
+    }
+
 
 
 }

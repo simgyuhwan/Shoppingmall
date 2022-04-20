@@ -1,4 +1,4 @@
-package com.growing.sgh.common.exception;
+package com.growing.sgh.exception;
 
 public class MemberNotFoundException extends RuntimeException{
 }

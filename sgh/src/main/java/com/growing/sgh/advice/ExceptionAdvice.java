@@ -1,16 +1,14 @@
-package com.growing.sgh.common.advice;
+package com.growing.sgh.advice;
 
-import com.growing.sgh.common.exception.MemberNotFoundException;
-import com.growing.sgh.common.exception.NicknameAlreadyExistsException;
-import com.growing.sgh.common.exception.UsernameAlreadyExistsException;
+import com.growing.sgh.exception.MemberNotFoundException;
+import com.growing.sgh.exception.NicknameAlreadyExistsException;
+import com.growing.sgh.exception.UsernameAlreadyExistsException;
 import com.growing.sgh.common.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.persistence.EntityExistsException;
 
 @Slf4j
 @RestControllerAdvice
