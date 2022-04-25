@@ -1,7 +1,8 @@
 package com.growing.sgh.domain.item.controller;
 
 import com.growing.sgh.common.response.Response;
-import com.growing.sgh.domain.item.dto.ItemRegisterDto;
+import com.growing.sgh.domain.item.dto.ItemDto;
+import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.service.ItemService;
 import com.growing.sgh.exception.RegisterImgNotExistsException;
 import lombok.RequiredArgsConstructor;
@@ -26,23 +27,31 @@ public class ItemController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response register(@Validated @RequestBody ItemRegisterDto registerDto,
+    public Response register(@Validated @RequestBody ItemDto itemDto,
                              @RequestPart("itemImgFile")List<MultipartFile> itemImgList) throws IOException {
         validateImgFile(itemImgList);
 
-        itemService.registerItem(registerDto, itemImgList);
+        itemService.itemRegister(itemDto, itemImgList);
         return success();
     }
 
-    @DeleteMapping("/delete/{itemId}")
+    @DeleteMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
     public Response delete(@PathVariable Long itemId){
-        itemService.delete(itemId);
+        itemService.itemDelete(itemId);
         return success();
+    }
+
+    @PutMapping("/{itemId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response update(@PathVariable Long itemId, @Validated @RequestBody ItemDto itemDto,
+                           @RequestPart("itemImgFile") List<MultipartFile> itemImgList) throws IOException {
+        validateImgFile(itemImgList);
+        return success(itemService.itemUpdate(itemId, itemDto, itemImgList));
     }
 
     private void validateImgFile(List<MultipartFile> itemImgList) {
-        if(itemImgList.get(0).isEmpty())throw new RegisterImgNotExistsException();
+        if(itemImgList.get(0).isEmpty()) throw new RegisterImgNotExistsException();
     }
 
 

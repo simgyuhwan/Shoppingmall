@@ -1,6 +1,6 @@
 package com.growing.sgh.domain.item.entity;
 
-import com.growing.sgh.domain.item.dto.ItemRegisterDto;
+import com.growing.sgh.domain.item.dto.ItemDto;
 import com.growing.sgh.domain.member.entity.BaseEntity;
 import lombok.*;
 
@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Table(name = "item")
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item extends BaseEntity {
 
@@ -34,7 +33,8 @@ public class Item extends BaseEntity {
     private ItemSellStatus itemSellStatus;
 
     @Builder
-    public Item(String itemNm,Integer price ,Integer stockNumber, String description, ItemSellStatus itemSellStatus){
+    public Item(Long id,String itemNm,Integer price ,Integer stockNumber, String description, ItemSellStatus itemSellStatus){
+        this.id = id;
         this.itemNm = itemNm;
         this.price = price;
         this.stockNumber = stockNumber;
@@ -42,6 +42,12 @@ public class Item extends BaseEntity {
         this.itemSellStatus = itemSellStatus;
     }
 
-
+    public void updateItem(ItemDto itemDto){
+        this.itemNm = itemDto.getItemNm();
+        this.description = itemDto.getDescription();
+        this.stockNumber = itemDto.getStockNumber();
+        this.price = itemDto.getPrice();
+        this.itemSellStatus = itemDto.getItemSellStatus();
+    }
 
 }
