@@ -16,20 +16,20 @@ import static com.growing.sgh.common.response.Response.success;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/members")
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping("/changepassword")
+    @PutMapping("/password")
     @ResponseStatus(HttpStatus.OK)
     public Response changePassword(@Validated @RequestBody ChangePasswordDto passwordDto,
                                    @AuthenticationPrincipal User user){
         memberService.changePassword(passwordDto, ((CustomUser) user).getMemberId() );
         return success();
     }
-    @PostMapping("/changeMemberInfo")
+    @PutMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
-    public Response changeInfo(@Validated @RequestBody ChangeMemberInfoDto memberInfo,
+    public Response changeMemberInfo(@Validated @RequestBody ChangeMemberInfoDto memberInfo,
                                @AuthenticationPrincipal User user){
         memberService.changeMemberInfo(memberInfo, ((CustomUser) user).getMemberId());
         return success();

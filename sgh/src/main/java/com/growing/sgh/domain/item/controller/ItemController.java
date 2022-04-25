@@ -19,7 +19,7 @@ import static com.growing.sgh.common.response.Response.*;
 @RestController
 @RequiredArgsConstructor
 @Transactional
-@RequestMapping("/item")
+@RequestMapping("/items")
 public class ItemController {
 
     private final ItemService itemService;
@@ -31,6 +31,13 @@ public class ItemController {
         validateImgFile(itemImgList);
 
         itemService.registerItem(registerDto, itemImgList);
+        return success();
+    }
+
+    @DeleteMapping("/delete/{itemId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response delete(@PathVariable Long itemId){
+        itemService.delete(itemId);
         return success();
     }
 
