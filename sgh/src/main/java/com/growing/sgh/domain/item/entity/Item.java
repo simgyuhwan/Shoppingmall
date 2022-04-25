@@ -1,17 +1,14 @@
 package com.growing.sgh.domain.item.entity;
 
+import com.growing.sgh.domain.item.dto.ItemDto;
 import com.growing.sgh.domain.member.entity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Table(name = "item")
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item extends BaseEntity {
 
@@ -23,7 +20,10 @@ public class Item extends BaseEntity {
     private String itemNm;
 
     @Column(nullable = false)
-    private int stockNumber;
+    private Integer price;
+
+    @Column(nullable = false)
+    private Integer stockNumber;
 
     @Lob
     @Column(nullable = false)
@@ -32,5 +32,22 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;
 
+    @Builder
+    public Item(Long id,String itemNm,Integer price ,Integer stockNumber, String description, ItemSellStatus itemSellStatus){
+        this.id = id;
+        this.itemNm = itemNm;
+        this.price = price;
+        this.stockNumber = stockNumber;
+        this.description = description;
+        this.itemSellStatus = itemSellStatus;
+    }
+
+    public void updateItem(ItemDto itemDto){
+        this.itemNm = itemDto.getItemNm();
+        this.description = itemDto.getDescription();
+        this.stockNumber = itemDto.getStockNumber();
+        this.price = itemDto.getPrice();
+        this.itemSellStatus = itemDto.getItemSellStatus();
+    }
 
 }

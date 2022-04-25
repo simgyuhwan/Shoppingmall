@@ -2,8 +2,7 @@ package com.growing.sgh.common.security.provider;
 
 import com.growing.sgh.common.security.CustomUserDetailService;
 import com.growing.sgh.common.security.constant.SecurityConstants;
-import com.growing.sgh.common.security.prop.JwtProperties;
-import com.growing.sgh.domain.member.entity.Member;
+import com.growing.sgh.common.prop.JwtProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

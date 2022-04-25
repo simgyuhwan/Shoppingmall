@@ -4,6 +4,7 @@ import com.growing.sgh.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Email;
@@ -39,4 +40,17 @@ public class SignUpRequest {
     @NotBlank(message = "핸드폰 번호를 입력해주세요.")
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})", message = "번호를 바르게 입력해주세요.")
     private String phoneNum;
+
+    public static Member toEntity(SignUpRequest signUpRequest, PasswordEncoder passwordEncoder){
+        return Member.builder()
+                .username(signUpRequest.getUsername())
+                .nickname(signUpRequest.getNickname())
+                .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                .email(signUpRequest.getEmail())
+                .address(signUpRequest.getAddress())
+                .phoneNum(signUpRequest.getPhoneNum())
+                .build();
+    }
+
+
 }

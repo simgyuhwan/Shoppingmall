@@ -1,16 +1,15 @@
-package com.growing.sgh.common.advice;
+package com.growing.sgh.advice;
 
-import com.growing.sgh.common.exception.MemberNotFoundException;
-import com.growing.sgh.common.exception.NicknameAlreadyExistsException;
-import com.growing.sgh.common.exception.UsernameAlreadyExistsException;
+import com.growing.sgh.exception.MemberNotFoundException;
+import com.growing.sgh.exception.NicknameAlreadyExistsException;
+import com.growing.sgh.exception.RegisterImgNotExistsException;
+import com.growing.sgh.exception.UsernameAlreadyExistsException;
 import com.growing.sgh.common.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.persistence.EntityExistsException;
 
 @Slf4j
 @RestControllerAdvice
@@ -39,5 +38,11 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response MemberNotFoundException(MemberNotFoundException e){
         return Response.failure(404, "가입된 회원이 아닙니다.");
+    }
+
+    @ExceptionHandler(RegisterImgNotExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response RegisterImgNotExistsException(RegisterImgNotExistsException e){
+        return Response.failure(400, "이미지 파일은 필수 값입니다.");
     }
 }

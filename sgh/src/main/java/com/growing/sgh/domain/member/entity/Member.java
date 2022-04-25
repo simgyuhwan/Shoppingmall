@@ -1,6 +1,6 @@
 package com.growing.sgh.domain.member.entity;
 
-import com.growing.sgh.domain.member.dto.ChangeMemberInfo;
+import com.growing.sgh.domain.member.dto.ChangeMemberInfoDto;
 import com.growing.sgh.domain.member.dto.SignUpRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,8 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -55,23 +53,11 @@ public class Member extends BaseEntity{
         this.phoneNum = phoneNum;
     }
 
-
-    public static Member toEntity(SignUpRequest signUpRequest, PasswordEncoder passwordEncoder){
-        return Member.builder()
-                .username(signUpRequest.getUsername())
-                .nickname(signUpRequest.getNickname())
-                .password(passwordEncoder.encode(signUpRequest.getPassword()))
-                .email(signUpRequest.getEmail())
-                .address(signUpRequest.getAddress())
-                .phoneNum(signUpRequest.getPhoneNum())
-                .build();
-    }
-
     public void changePassword(String nwPassword, PasswordEncoder passwordEncoder){
         this.password = passwordEncoder.encode(nwPassword);
     }
 
-    public void changeInfo(ChangeMemberInfo memberInfo){
+    public void changeInfo(ChangeMemberInfoDto memberInfo){
         this.nickname = memberInfo.getNickname();
         this.address = memberInfo.getNickname();
         this.phoneNum = memberInfo.getPhoneNum();
