@@ -96,4 +96,7 @@ public class ItemImgService {
         , oriImgName, itemImgFile.getBytes());
     }
 
+    public List<ItemImg> getItemImgs(Long itemId) {
+        return itemImgRepository.findAllByItemId(itemId);
+    }
 }

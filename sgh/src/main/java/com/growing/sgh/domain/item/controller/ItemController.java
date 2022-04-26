@@ -2,7 +2,9 @@ package com.growing.sgh.domain.item.controller;
 
 import com.growing.sgh.common.response.Response;
 import com.growing.sgh.domain.item.dto.ItemDto;
+import com.growing.sgh.domain.item.dto.ItemImgDto;
 import com.growing.sgh.domain.item.entity.Item;
+import com.growing.sgh.domain.item.service.ItemImgService;
 import com.growing.sgh.domain.item.service.ItemService;
 import com.growing.sgh.exception.RegisterImgNotExistsException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.growing.sgh.common.response.Response.*;
 
@@ -24,6 +27,7 @@ import static com.growing.sgh.common.response.Response.*;
 public class ItemController {
 
     private final ItemService itemService;
+    private final ItemImgService itemImgService;
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
@@ -46,14 +50,16 @@ public class ItemController {
     public Response update(@PathVariable Long itemId, @Validated @RequestBody ItemDto itemDto,
                            @RequestPart("itemImgFile") List<MultipartFile> itemImgList) throws IOException {
         validateImgFile(itemImgList);
-        return success(itemService.itemUpdate(itemId, itemDto, itemImgList));
+        Item item = itemService.itemUpdate(itemId, itemDto);
+        return success(ItemDto.of(item,itemImgService.itemImgUpdate(item,
+                itemImgList).stream().map(itemImg -> ItemImgDto.of(itemImg)).collect(Collectors.toList())));
     }
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
     public Response itemDtl(@PathVariable Long itemId){
-
-        return success();
+        return success(ItemDto.of(itemService.getItemDtl(itemId),
+                itemImgService.getItemImgs(itemId).stream().map(ItemImg -> ItemImgDto.of(ItemImg)).collect(Collectors.toList())));
     }
 
     private void validateImgFile(List<MultipartFile> itemImgList) {

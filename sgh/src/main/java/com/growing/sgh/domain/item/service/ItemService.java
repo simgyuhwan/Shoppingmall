@@ -36,10 +36,16 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
-    public ItemDto itemUpdate(Long itemId,ItemDto itemDto, List<MultipartFile> itemImgList) throws IOException {
+    public Item itemUpdate(Long itemId,ItemDto itemDto) throws IOException {
         Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         item.updateItem(itemDto);
-        return ItemDto.of(item,itemImgService.itemImgUpdate(item, itemImgList).stream().map(itemImg -> ItemImgDto.of(itemImg)).collect(Collectors.toList()));
+        return item;
     }
+
+    public Item getItemDtl(Long itemId){
+        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
+        return item;
+    }
+
 
 }
