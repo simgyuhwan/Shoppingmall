@@ -42,10 +42,4 @@ public class ItemService {
         return ItemDto.of(item,itemImgService.itemImgUpdate(item, itemImgList).stream().map(itemImg -> ItemImgDto.of(itemImg)).collect(Collectors.toList()));
     }
 
-//    private void validateItem(Long itemId) {
-//        if(!itemRepository.existsById(itemId))
-//            throw new ItemNotFoundException(itemId.toString());
-//    }
-
-
 }

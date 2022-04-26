@@ -1,9 +1,6 @@
 package com.growing.sgh.advice;
 
-import com.growing.sgh.exception.MemberNotFoundException;
-import com.growing.sgh.exception.NicknameAlreadyExistsException;
-import com.growing.sgh.exception.RegisterImgNotExistsException;
-import com.growing.sgh.exception.UsernameAlreadyExistsException;
+import com.growing.sgh.exception.*;
 import com.growing.sgh.common.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -45,4 +42,25 @@ public class ExceptionAdvice {
     public Response RegisterImgNotExistsException(RegisterImgNotExistsException e){
         return Response.failure(400, "이미지 파일은 필수 값입니다.");
     }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response EmailAlreadyExistsException(EmailAlreadyExistsException e){
+        return Response.failure(409, "이미 가입된 이메일입니다.");
+    }
+
+    @ExceptionHandler(ItemImgFileNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response ItemImgFileNotFoundException(ItemImgFileNotFoundException e){
+        return Response.failure(400, "이미지 파일이 존재하지 않습니다.");
+    }
+
+    @ExceptionHandler(ItemNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response ItemNotFoundException(ItemNotFoundException e){
+        return Response.failure(400, "등록된 상품이 아닙니다.");
+    }
+
+
+
 }

@@ -30,7 +30,6 @@ public class ItemController {
     public Response register(@Validated @RequestBody ItemDto itemDto,
                              @RequestPart("itemImgFile")List<MultipartFile> itemImgList) throws IOException {
         validateImgFile(itemImgList);
-
         itemService.itemRegister(itemDto, itemImgList);
         return success();
     }
@@ -48,6 +47,13 @@ public class ItemController {
                            @RequestPart("itemImgFile") List<MultipartFile> itemImgList) throws IOException {
         validateImgFile(itemImgList);
         return success(itemService.itemUpdate(itemId, itemDto, itemImgList));
+    }
+
+    @GetMapping("/{itemId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response itemDtl(@PathVariable Long itemId){
+
+        return success();
     }
 
     private void validateImgFile(List<MultipartFile> itemImgList) {

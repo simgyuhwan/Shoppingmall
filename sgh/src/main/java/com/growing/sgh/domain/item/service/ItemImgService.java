@@ -40,13 +40,10 @@ public class ItemImgService {
     }
 
     public List<ItemImg> itemImgUpdate(Item item, List<MultipartFile> itemImgList) throws IOException {
-        List<ItemImg> itemImgs = itemImgRepository.findAllByItemId(item.getId())
-                .orElseThrow(ItemImgNotFoundException::new);
-
+        List<ItemImg> itemImgs = itemImgRepository.findAllByItemId(item.getId());
         List<ItemImg> updateItemImgs = new ArrayList<>();
 
         for(int i=0; i<itemImgList.size(); i++) {
-
             updateItemImgs.add(updateItemImg(item,itemImgs.get(i), itemImgList.get(i)));
         }
         return updateItemImgs;

@@ -35,17 +35,6 @@ public class ItemDto {
 
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>();
 
-    public static Item toEntity(ItemDto registerDto){
-        return Item.builder()
-                .id(registerDto.getId())
-                .itemNm(registerDto.getItemNm())
-                .price(registerDto.getPrice())
-                .stockNumber(registerDto.getStockNumber())
-                .description(registerDto.getDescription())
-                .itemSellStatus(registerDto.getItemSellStatus())
-                .build();
-    }
-
     @Builder
     public ItemDto(Long id, String itemNm, Integer price, Integer stockNumber,
                    String description, ItemSellStatus itemSellStatus, List<ItemImgDto> itemImgDtoList) {
@@ -56,6 +45,17 @@ public class ItemDto {
         this.description = description;
         this.itemSellStatus = itemSellStatus;
         this.itemImgDtoList = itemImgDtoList;
+    }
+
+    public static Item toEntity(ItemDto registerDto){
+        return Item.builder()
+                .id(registerDto.getId())
+                .itemNm(registerDto.getItemNm())
+                .price(registerDto.getPrice())
+                .stockNumber(registerDto.getStockNumber())
+                .description(registerDto.getDescription())
+                .itemSellStatus(registerDto.getItemSellStatus())
+                .build();
     }
 
     public static ItemDto of(Item item, List<ItemImgDto> itemImgDtos) {
