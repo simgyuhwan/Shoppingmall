@@ -15,7 +15,7 @@ import static com.growing.sgh.common.response.Response.success;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/members")
 public class SignController {
     private final SignService signService;
 

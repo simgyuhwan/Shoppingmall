@@ -17,6 +17,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -26,46 +27,52 @@ public class ItemImgService {
     private final FileProperties fileProperties;
     private final FileService fileService;
 
-    public void itemImgRegister(Item item, List<MultipartFile> itemImgList) throws IOException {
+    public void itemImgRegister(Item item, List<MultipartFile> itemImgFiles) throws IOException {
         ItemImg itemImg = new ItemImg(item);
-        for(int i=0; i<itemImgList.size(); i++){
+        for(int i=0; i<itemImgFiles.size(); i++){
             if( i == 0)
                 itemImg.RepImg();
             else
                 itemImg.SubImg();
-
-            saveItemImg(itemImg, itemImgList.get(i));
+            saveItemImg(itemImg, itemImgFiles.get(i));
         }
-
     }
 
-    public List<ItemImg> itemImgUpdate(Item item, List<MultipartFile> itemImgList) throws IOException {
-        List<ItemImg> itemImgs = itemImgRepository.findAllByItemId(item.getId())
-                .orElseThrow(ItemImgNotFoundException::new);
-
+    public List<ItemImg> itemImgUpdate(Item item, List<MultipartFile> itemImgFiles) throws IOException {
+        List<ItemImg> itemImgs = itemImgRepository.findAllByItemId(item.getId());
         List<ItemImg> updateItemImgs = new ArrayList<>();
 
-        for(int i=0; i<itemImgList.size(); i++) {
-
-            updateItemImgs.add(updateItemImg(item,itemImgs.get(i), itemImgList.get(i)));
+        for(int i=0; i<itemImgFiles.size(); i++) {
+            updateItemImgs.add(updateItemImg(item, itemImgs.get(i), itemImgFiles.get(i)));
         }
         return updateItemImgs;
     }
 
+    @Transactional(readOnly = true)
+    public List<ItemImg> getItemImgs(Long itemId) {
+        return itemImgRepository.findAllByItemId(itemId);
+    }
+
     private ItemImg updateItemImg(Item item, ItemImg itemImg, MultipartFile itemImgFile) throws IOException {
-            validateItemImgFile(itemImgFile);
-            clearPreviousItemImgFile(itemImg);
-           if(itemImg == null){
-               itemImg = new ItemImg(item);
-               itemImgRepository.save(itemImg);
-           }
+        validateItemImgFile(itemImgFile);
+        clearPreviousItemImgFile(itemImg);
 
-            String oriImgName = itemImgFile.getOriginalFilename();
-            String imgName = createImgName(itemImgFile, oriImgName);
-            String imgUrl = "/images/item/" + imgName;
+        if(Objects.isNull(itemImg)){
+            itemImg = saveItemImg(item);
+        }
 
-            itemImg.updateItemImg(oriImgName, imgName, imgUrl);
-            return itemImg;
+        nameExtractionInformationRegistration(itemImg, itemImgFile);
+        return itemImg;
+    }
+
+    private ItemImg saveItemImg(Item item) {
+        return itemImgRepository.save(new ItemImg(item));
+    }
+
+    private void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile) throws IOException {
+        validateItemImgFile(itemImgFile);
+        nameExtractionInformationRegistration(itemImg, itemImgFile);
+        itemImgRepository.save(itemImg);
     }
 
     private void validateItemImgFile(MultipartFile itemImgFile) {
@@ -80,23 +87,15 @@ public class ItemImgService {
         }
     }
 
-    private void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile) throws IOException {
-        String oriImgName = itemImgFile.getOriginalFilename();
-        String imgName = "";
-        String imgUrl = "";
-
-        if(!StringUtils.isEmpty(oriImgName)){
-            imgName = createImgName(itemImgFile, oriImgName);
-            imgUrl = "/images/item/" + imgName;
-        }
-
-        itemImg.updateItemImg(oriImgName, imgName, imgUrl);
-        itemImgRepository.save(itemImg);
-    }
-
-    private String createImgName(MultipartFile itemImgFile, String oriImgName) throws IOException {
+    private String uploadItemImgFile(MultipartFile itemImgFile, String oriImgName) throws IOException {
         return fileService.uploadFile(fileProperties.getItemImgLocation()
         , oriImgName, itemImgFile.getBytes());
     }
 
+    private void nameExtractionInformationRegistration(ItemImg itemImg, MultipartFile itemImgFile) throws IOException {
+        String oriImgName = itemImgFile.getOriginalFilename();
+        String imgName = uploadItemImgFile(itemImgFile, oriImgName);
+        String imgUrl = "/images/item/" + imgName;
+        itemImg.updateItemImg(oriImgName, imgName, imgUrl);
+    }
 }
