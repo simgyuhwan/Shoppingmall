@@ -3,6 +3,7 @@ package com.growing.sgh.domain.item.controller;
 import com.growing.sgh.common.response.Response;
 import com.growing.sgh.domain.item.dto.ItemDto;
 import com.growing.sgh.domain.item.dto.ItemImgDto;
+import com.growing.sgh.domain.item.dto.ItemSearchDto;
 import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.service.ItemImgService;
 import com.growing.sgh.domain.item.service.ItemService;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.growing.sgh.common.response.Response.*;
@@ -60,6 +62,14 @@ public class ItemController {
     public Response itemDtl(@PathVariable Long itemId){
         return success(ItemDto.of(itemService.getItemDtl(itemId),
                 itemImgService.getItemImgs(itemId).stream().map(ItemImg -> ItemImgDto.of(ItemImg)).collect(Collectors.toList())));
+    }
+
+    @GetMapping("/{page}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response itemsDtl(@PathVariable("page")Optional<Integer> page, @RequestBody ItemSearchDto itemSearchDto){
+
+
+        return success();
     }
 
     private void validateImgFile(List<MultipartFile> itemImgList) {
