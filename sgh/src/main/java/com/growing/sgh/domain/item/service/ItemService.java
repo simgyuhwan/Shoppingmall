@@ -42,6 +42,7 @@ public class ItemService {
         return item;
     }
 
+    @Transactional(readOnly = true)
     public Item getItemDtl(Long itemId){
         Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         return item;
