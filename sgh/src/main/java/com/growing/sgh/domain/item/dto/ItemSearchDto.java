@@ -8,14 +8,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ItemSearchDto {
+
+    // all, 1d, 1w, 1m, 6m
     private String searchDateType;
 
     private ItemSellStatus searchSellStatus;
 
+    // itemNm : 상품명
     private String searchBy;
 
-    private Long maxPrice;
-    private Long minPrice;
+    private Integer maxPrice;
+    private Integer minPrice;
 
     private String searchQuery = "";
 }
