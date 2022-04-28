@@ -1,7 +1,6 @@
-package com.growing.sgh.common.security.filter;
+package com.growing.sgh.config.security.filter;
 
-import com.growing.sgh.common.security.constant.SecurityConstants;
-import com.growing.sgh.common.security.provider.JwtTokenProvider;
+import com.growing.sgh.config.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,8 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.growing.sgh.common.security.constant.SecurityConstants.*;
-import static com.growing.sgh.common.security.constant.SecurityConstants.TOKEN_HEADER;
+import static com.growing.sgh.config.security.constant.SecurityConstants.TOKEN_HEADER;
 
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -23,11 +21,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader(TOKEN_HEADER);
-
         if(validateToken(token)){
             setAuthentication(token);
         }
-
         filterChain.doFilter(request,response);
     }
 

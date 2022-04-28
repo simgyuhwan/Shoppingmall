@@ -1,7 +1,7 @@
 package com.growing.sgh.domain.member.controller;
 
 import com.growing.sgh.common.response.Response;
-import com.growing.sgh.common.security.entity.CustomUser;
+import com.growing.sgh.config.security.entity.CustomUser;
 import com.growing.sgh.domain.member.dto.ChangeMemberInfoDto;
 import com.growing.sgh.domain.member.dto.ChangePasswordDto;
 import com.growing.sgh.domain.member.service.MemberService;

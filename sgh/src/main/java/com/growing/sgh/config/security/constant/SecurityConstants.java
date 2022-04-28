@@ -1,4 +1,4 @@
-package com.growing.sgh.common.security.constant;
+package com.growing.sgh.config.security.constant;
 
 public class SecurityConstants {
     public static final String AUTH_LOGIN_URL = "/member/signin";

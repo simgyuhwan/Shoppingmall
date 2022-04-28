@@ -2,6 +2,7 @@ package com.growing.sgh.domain.item.entity;
 
 import com.growing.sgh.domain.item.dto.ItemDto;
 import com.growing.sgh.domain.member.entity.BaseEntity;
+import com.growing.sgh.exception.OutOfStockException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,6 +41,16 @@ public class Item extends BaseEntity {
         this.stockNumber = stockNumber;
         this.description = description;
         this.itemSellStatus = itemSellStatus;
+    }
+
+    public void removeStock(int stockNumber){
+        int restStock = this.stockNumber - stockNumber;
+        if(restStock < 0) throw new OutOfStockException();
+        this.stockNumber = restStock;
+    }
+
+    public void addStock(int stockNumber){
+        this.stockNumber += stockNumber;
     }
 
     public void updateItem(ItemDto itemDto){

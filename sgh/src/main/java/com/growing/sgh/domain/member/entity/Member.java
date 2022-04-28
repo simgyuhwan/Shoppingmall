@@ -39,7 +39,7 @@ public class Member extends BaseEntity{
     @Column(name = "phoneNum")
     private String phoneNum;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Collection<Role> authorities = new ArrayList<>();
 

@@ -1,4 +1,4 @@
-package com.growing.sgh.common.security.handler;
+package com.growing.sgh.config.security.handler;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
