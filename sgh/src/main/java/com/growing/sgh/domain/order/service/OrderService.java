@@ -9,10 +9,13 @@ import com.growing.sgh.domain.order.entity.Order;
 import com.growing.sgh.domain.order.entity.OrderItem;
 import com.growing.sgh.domain.order.repository.OrderRepository;
 import com.growing.sgh.exception.ItemNotFoundException;
+import com.growing.sgh.exception.MemberDoesNotMatchException;
 import com.growing.sgh.exception.MemberNotFoundException;
+import com.growing.sgh.exception.OrderNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,4 +40,20 @@ public class OrderService {
 
         orderRepository.save(order);
     }
+
+    public void cancelOrder(Long orderId, long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+
+        validateOrder(member, order);
+
+        order.cancelOrder();
+    }
+
+    private void validateOrder(Member member, Order order){
+        if(!StringUtils.equals(member.getUsername(), order.getMember().getUsername()))
+            throw new MemberDoesNotMatchException();
+    }
+
+
 }

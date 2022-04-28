@@ -58,6 +58,9 @@ public class Order {
                 .orderItems(new ArrayList<>())
                 .orderStatus(OrderStatus.ORDER)
                 .build();
+    }
 
+    public void cancelOrder(){
+        this.orderStatus = OrderStatus.CANCEL;
     }
 }
