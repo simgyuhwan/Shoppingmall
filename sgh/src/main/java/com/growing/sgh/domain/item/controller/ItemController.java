@@ -67,14 +67,12 @@ public class ItemController {
                 itemImgService.getItemImgs(itemId).stream().map(ItemImg -> ItemImgDto.of(ItemImg)).collect(Collectors.toList())));
     }
 
-//    @GetMapping("/{page}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Response itemsDtl(@PathVariable("page")Optional<Integer> page, @RequestBody ItemSearchDto itemSearchDto){
-//        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-//        Page<Item> items = itemService.getItemPage(itemSearchDto, pageable);
-//
-//        return success();
-//    }
+    @GetMapping("/{page}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response itemsDtl(@PathVariable("page")Optional<Integer> page, @RequestBody ItemSearchDto itemSearchDto){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        return success(itemService.getItemPage(itemSearchDto, pageable));
+    }
 
     private void validateImgFile(List<MultipartFile> itemImgList) {
         if(itemImgList.get(0).isEmpty()) throw new RegisterImgNotExistsException();
