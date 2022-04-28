@@ -12,10 +12,11 @@ public class ItemSearchDto {
 
     private ItemSellStatus searchSellStatus;
 
+    // itemNm : 상품명, createBy : 판매자
     private String searchBy;
 
-    private Long maxPrice;
-    private Long minPrice;
+    private Integer maxPrice;
+    private Integer minPrice;
 
     private String searchQuery = "";
 }

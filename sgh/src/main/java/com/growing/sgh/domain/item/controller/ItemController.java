@@ -9,6 +9,9 @@ import com.growing.sgh.domain.item.service.ItemImgService;
 import com.growing.sgh.domain.item.service.ItemService;
 import com.growing.sgh.exception.RegisterImgNotExistsException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -64,13 +67,14 @@ public class ItemController {
                 itemImgService.getItemImgs(itemId).stream().map(ItemImg -> ItemImgDto.of(ItemImg)).collect(Collectors.toList())));
     }
 
-    @GetMapping("/{page}")
-    @ResponseStatus(HttpStatus.OK)
-    public Response itemsDtl(@PathVariable("page")Optional<Integer> page, @RequestBody ItemSearchDto itemSearchDto){
-
-
-        return success();
-    }
+//    @GetMapping("/{page}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Response itemsDtl(@PathVariable("page")Optional<Integer> page, @RequestBody ItemSearchDto itemSearchDto){
+//        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+//        Page<Item> items = itemService.getItemPage(itemSearchDto, pageable);
+//
+//        return success();
+//    }
 
     private void validateImgFile(List<MultipartFile> itemImgList) {
         if(itemImgList.get(0).isEmpty()) throw new RegisterImgNotExistsException();
