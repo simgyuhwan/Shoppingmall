@@ -65,5 +65,8 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     public Response OutOfStockException(OutOfStockException e){return Response.failure(409, "상품의 재고가 없습니다.");}
 
+    @ExceptionHandler(SoldOutItemException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response SoldOutItemException(SoldOutItemException e ){return Response.failure(409, "판매 중지된 상품입니다.");}
 
 }
