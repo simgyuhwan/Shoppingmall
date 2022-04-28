@@ -1,8 +1,7 @@
-package com.growing.sgh.common.security.filter;
+package com.growing.sgh.config.security.filter;
 
-import com.growing.sgh.common.security.constant.SecurityConstants;
-import com.growing.sgh.common.security.entity.CustomUser;
-import com.growing.sgh.common.security.provider.JwtTokenProvider;
+import com.growing.sgh.config.security.entity.CustomUser;
+import com.growing.sgh.config.security.provider.JwtTokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.growing.sgh.common.security.constant.SecurityConstants.*;
+import static com.growing.sgh.config.security.constant.SecurityConstants.*;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;

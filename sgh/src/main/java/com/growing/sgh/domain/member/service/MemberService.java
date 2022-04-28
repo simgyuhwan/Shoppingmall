@@ -1,11 +1,8 @@
 package com.growing.sgh.domain.member.service;
 
 import com.growing.sgh.exception.*;
-import com.growing.sgh.common.security.provider.JwtTokenProvider;
 import com.growing.sgh.domain.member.dto.*;
 import com.growing.sgh.domain.member.entity.Member;
-import com.growing.sgh.domain.member.entity.Role;
-import com.growing.sgh.domain.member.entity.RoleType;
 import com.growing.sgh.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

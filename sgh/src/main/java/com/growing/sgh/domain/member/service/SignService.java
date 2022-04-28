@@ -1,6 +1,6 @@
 package com.growing.sgh.domain.member.service;
 
-import com.growing.sgh.common.security.provider.JwtTokenProvider;
+import com.growing.sgh.config.security.provider.JwtTokenProvider;
 import com.growing.sgh.domain.member.dto.SignInRequest;
 import com.growing.sgh.domain.member.dto.SignInResponse;
 import com.growing.sgh.domain.member.dto.SignUpRequest;

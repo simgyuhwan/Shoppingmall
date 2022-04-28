@@ -61,6 +61,9 @@ public class ExceptionAdvice {
         return Response.failure(400, "등록된 상품이 아닙니다.");
     }
 
+    @ExceptionHandler(OutOfStockException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response OutOfStockException(OutOfStockException e){return Response.failure(409, "상품의 재고가 없습니다.");}
 
 
 }

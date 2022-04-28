@@ -1,7 +1,7 @@
-package com.growing.sgh.common.security.provider;
+package com.growing.sgh.config.security.provider;
 
-import com.growing.sgh.common.security.CustomUserDetailService;
-import com.growing.sgh.common.security.constant.SecurityConstants;
+import com.growing.sgh.config.security.CustomUserDetailService;
+import com.growing.sgh.config.security.constant.SecurityConstants;
 import com.growing.sgh.common.prop.JwtProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

@@ -1,16 +1,13 @@
 package com.growing.sgh.config.security;
 
-import com.growing.sgh.common.security.CustomUserDetailService;
-import com.growing.sgh.common.security.filter.JwtAuthenticationFilter;
-import com.growing.sgh.common.security.filter.JwtRequestFilter;
-import com.growing.sgh.common.security.handler.JwtAccessDeniedHandler;
-import com.growing.sgh.common.security.handler.JwtAuthenticationEntryPoint;
-import com.growing.sgh.common.security.provider.JwtTokenProvider;
+import com.growing.sgh.config.security.filter.JwtRequestFilter;
+import com.growing.sgh.config.security.handler.JwtAccessDeniedHandler;
+import com.growing.sgh.config.security.handler.JwtAuthenticationEntryPoint;
+import com.growing.sgh.config.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.CachingUserDetailsService;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

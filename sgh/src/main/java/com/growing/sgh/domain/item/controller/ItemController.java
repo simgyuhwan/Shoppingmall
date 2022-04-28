@@ -62,14 +62,14 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public Response itemDtl(@PathVariable Long itemId){
+    public Response getItem(@PathVariable Long itemId){
         return success(ItemDto.of(itemService.getItemDtl(itemId),
                 itemImgService.getItemImgs(itemId).stream().map(ItemImg -> ItemImgDto.of(ItemImg)).collect(Collectors.toList())));
     }
 
     @GetMapping("/{page}")
     @ResponseStatus(HttpStatus.OK)
-    public Response itemsDtl(@PathVariable("page")Optional<Integer> page, @RequestBody ItemSearchDto itemSearchDto){
+    public Response searchItems(@PathVariable("page")Optional<Integer> page, @RequestBody ItemSearchDto itemSearchDto){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         return success(itemService.getItemPage(itemSearchDto, pageable));
     }

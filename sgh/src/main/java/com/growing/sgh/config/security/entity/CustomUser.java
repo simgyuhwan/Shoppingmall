@@ -1,4 +1,4 @@
-package com.growing.sgh.common.security.entity;
+package com.growing.sgh.config.security.entity;
 
 import com.growing.sgh.domain.member.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,5 +27,7 @@ public class CustomUser extends User {
     public String getUsername(){
         return member.getUsername();
     }
+
+   // public Member getMember() {return member;}
 
 }
