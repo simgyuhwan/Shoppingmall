@@ -13,4 +13,6 @@ public interface ItemImgRepository extends JpaRepository<ItemImg, Long> {
     @Query("SELECT img FROM ItemImg img WHERE img.item.id = :itemId")
     List<ItemImg> findAllByItemId(@Param("itemId")Long itemId);
 
+    ItemImg findByItemIdAndRepImgYn(Long itemId, String repImgYn);
+
 }
