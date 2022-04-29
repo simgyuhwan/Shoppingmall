@@ -1,5 +1,6 @@
 package com.growing.sgh.domain.order.entity;
 
+import com.growing.sgh.domain.member.entity.BaseEntity;
 import com.growing.sgh.domain.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders")
-public class Order {
+public class Order extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
