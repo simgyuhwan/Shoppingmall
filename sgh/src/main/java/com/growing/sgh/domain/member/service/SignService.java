@@ -8,7 +8,7 @@ import com.growing.sgh.domain.member.entity.Member;
 import com.growing.sgh.domain.member.entity.Role;
 import com.growing.sgh.domain.member.entity.RoleType;
 import com.growing.sgh.domain.member.repository.MemberRepository;
-import com.growing.sgh.exception.*;
+import com.growing.sgh.exception.member.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

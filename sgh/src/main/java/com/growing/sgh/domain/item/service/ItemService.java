@@ -1,13 +1,11 @@
 package com.growing.sgh.domain.item.service;
 
 import com.growing.sgh.domain.item.dto.ItemDto;
-import com.growing.sgh.domain.item.dto.ItemImgDto;
 import com.growing.sgh.domain.item.dto.ItemSearchDto;
 import com.growing.sgh.domain.item.entity.Item;
-import com.growing.sgh.domain.item.entity.ItemImg;
 import com.growing.sgh.domain.item.repository.ItemImgRepository;
 import com.growing.sgh.domain.item.repository.ItemRepository;
-import com.growing.sgh.exception.ItemNotFoundException;
+import com.growing.sgh.exception.item.ItemNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

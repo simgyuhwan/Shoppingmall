@@ -2,7 +2,7 @@ package com.growing.sgh.domain.item.entity;
 
 import com.growing.sgh.domain.item.dto.ItemDto;
 import com.growing.sgh.domain.member.entity.BaseEntity;
-import com.growing.sgh.exception.OutOfStockException;
+import com.growing.sgh.exception.order.OutOfStockException;
 import lombok.*;
 
 import javax.persistence.*;
