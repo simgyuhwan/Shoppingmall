@@ -29,6 +29,14 @@ public class CategoryController {
         return Response.success();
     }
 
+    @PutMapping("/{categoryId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response update(@PathVariable("categoryId") Long categoryId, @RequestBody @Validated CategoryDto categoryDto){
+        categoryService.categoryUpdate(categoryId, categoryDto);
+        return Response.success();
+    }
+
+    
 
 
 }

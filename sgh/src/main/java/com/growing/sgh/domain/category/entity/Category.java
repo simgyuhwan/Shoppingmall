@@ -1,5 +1,6 @@
 package com.growing.sgh.domain.category.entity;
 
+import com.growing.sgh.domain.category.dto.CategoryDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,5 +41,10 @@ public class Category {
 
     public void changeParent(Category parent){
         this.parent = parent;
+        this.depth = parent.depth+1;
+    }
+
+    public void updateCategory(CategoryDto categoryDto) {
+        this.name = categoryDto.getName();
     }
 }

@@ -34,9 +34,21 @@ public class CategoryService {
         categoryRepository.delete(categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new));
     }
 
-    private boolean isParentCategory(CategoryDto categoryDto) {
-        if(Objects.isNull(categoryDto.getParentId())) return false;
-        return true;
+
+    public void categoryUpdate(Long categoryId, CategoryDto categoryDto) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        category.updateCategory(categoryDto);
+        if(isParentCategory(categoryDto) && !compareCategoryParent(categoryDto, category)){
+            Category parentCategory = categoryRepository.findById(categoryDto.getParentId()).orElseThrow(CategoryNotFoundException::new);
+            category.changeParent(parentCategory);
+        }
     }
 
+    private boolean compareCategoryParent(CategoryDto categoryDto, Category category) {
+        return category.getParent().getId().equals(categoryDto.getParentId());
+    }
+
+    private boolean isParentCategory(CategoryDto categoryDto) {
+        return !Objects.isNull(categoryDto.getParentId());
+    }
 }
