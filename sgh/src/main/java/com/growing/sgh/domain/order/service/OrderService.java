@@ -2,6 +2,7 @@ package com.growing.sgh.domain.order.service;
 
 import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.entity.ItemImg;
+import com.growing.sgh.domain.item.entity.ItemSellStatus;
 import com.growing.sgh.domain.item.repository.ItemImgRepository;
 import com.growing.sgh.domain.item.repository.ItemRepository;
 import com.growing.sgh.domain.member.entity.Member;
@@ -12,10 +13,7 @@ import com.growing.sgh.domain.order.dto.OrderItemDto;
 import com.growing.sgh.domain.order.entity.Order;
 import com.growing.sgh.domain.order.entity.OrderItem;
 import com.growing.sgh.domain.order.repository.OrderRepository;
-import com.growing.sgh.exception.ItemNotFoundException;
-import com.growing.sgh.exception.MemberDoesNotMatchException;
-import com.growing.sgh.exception.MemberNotFoundException;
-import com.growing.sgh.exception.OrderNotFoundException;
+import com.growing.sgh.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,8 +36,10 @@ public class OrderService {
     private final ItemImgRepository itemImgRepository;
 
     public void order(OrderDto orderDto, Long memberId){
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
         Item item = itemRepository.findById(orderDto.getItemId()).orElseThrow(ItemNotFoundException::new);
+        checkSalesStatus(item);
+
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
         OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getCount());
 
@@ -78,6 +78,11 @@ public class OrderService {
         }
 
         return new PageImpl<OrderHistDto>(orderHistDtos, pageable, totalCount);
+    }
+
+
+    private void checkSalesStatus(Item item) {
+        if(item.getItemSellStatus().equals(ItemSellStatus.SOLD_OUT)) throw new SoldOutItemException();
     }
 
     private void validateOrder(Member member, Order order){
