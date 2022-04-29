@@ -1,4 +1,4 @@
-package com.growing.sgh.exception;
+package com.growing.sgh.exception.order;
 
 public class OutOfStockException extends RuntimeException{
     public OutOfStockException() {

@@ -1,0 +1,37 @@
+package com.growing.sgh.domain.category.service;
+
+import com.growing.sgh.domain.category.dto.CategoryDto;
+import com.growing.sgh.domain.category.entity.Category;
+import com.growing.sgh.domain.category.repository.CategoryRepository;
+import com.growing.sgh.domain.item.repository.ItemRepository;
+import com.growing.sgh.exception.category.CategoryNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class CategoryService {
+    private final CategoryRepository categoryRepository;
+    private final ItemRepository itemRepository;
+
+    public void categoryRegister(CategoryDto categoryDto) {
+        Category category;
+        if(!isParentCategory(categoryDto)){
+            category = CategoryDto.toEntity(categoryDto, 1L);
+        }else {
+            Category parentCategory = categoryRepository.findById(categoryDto.getParentId()).orElseThrow(CategoryNotFoundException::new);
+            category = CategoryDto.toEntity(categoryDto, parentCategory.getDepth()+1);
+            category.changeParent(parentCategory);
+        }
+        categoryRepository.save(category);
+    }
+
+    private boolean isParentCategory(CategoryDto categoryDto) {
+        if(Objects.isNull(categoryDto.getParentId())) return false;
+        return true;
+    }
+}

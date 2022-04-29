@@ -1,4 +1,4 @@
-package com.growing.sgh.exception;
+package com.growing.sgh.exception.member;
 
 public class MemberDoesNotMatchException extends RuntimeException{
     public MemberDoesNotMatchException() {

@@ -1,9 +1,11 @@
 package com.growing.sgh.domain.member.service;
 
-import com.growing.sgh.exception.*;
 import com.growing.sgh.domain.member.dto.*;
 import com.growing.sgh.domain.member.entity.Member;
 import com.growing.sgh.domain.member.repository.MemberRepository;
+import com.growing.sgh.exception.member.MemberNotFoundException;
+import com.growing.sgh.exception.member.NicknameAlreadyExistsException;
+import com.growing.sgh.exception.member.SignInFailureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

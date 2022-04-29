@@ -1,19 +1,16 @@
 package com.growing.sgh.domain.item.service;
 
 import com.growing.sgh.common.prop.FileProperties;
-import com.growing.sgh.domain.item.dto.ItemImgDto;
 import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.entity.ItemImg;
 import com.growing.sgh.domain.item.repository.ItemImgRepository;
-import com.growing.sgh.exception.ItemImgFileNotFoundException;
-import com.growing.sgh.exception.ItemImgNotFoundException;
+import com.growing.sgh.exception.item.ItemImgFileNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
-import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

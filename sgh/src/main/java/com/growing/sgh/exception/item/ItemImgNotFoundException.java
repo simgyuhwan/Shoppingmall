@@ -1,4 +1,4 @@
-package com.growing.sgh.exception;
+package com.growing.sgh.exception.item;
 
 public class ItemImgNotFoundException extends RuntimeException{
     public ItemImgNotFoundException() {
