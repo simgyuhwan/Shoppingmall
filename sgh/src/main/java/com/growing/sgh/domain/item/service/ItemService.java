@@ -37,15 +37,13 @@ public class ItemService {
     }
 
     public void itemDelete(Long itemId){
-        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
-        itemRepository.delete(item);
+        itemRepository.delete(itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new));
     }
 
     public Item itemUpdate(Long itemId,ItemDto updateItemDto) throws IOException {
         Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         item.updateItem(updateItemDto);
         if(!item.getCategory().getId().equals(updateItemDto.getCategoryId())) changeCategory(updateItemDto, item);
-
         return item;
     }
 
@@ -55,8 +53,7 @@ public class ItemService {
 
     @Transactional(readOnly = true)
     public Item getItemDtl(Long itemId){
-        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
-        return item;
+        return itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
     }
 
     @Transactional(readOnly = true)

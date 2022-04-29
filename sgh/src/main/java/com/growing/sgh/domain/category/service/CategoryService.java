@@ -30,8 +30,13 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
+    public void categoryDelete(Long categoryId) {
+        categoryRepository.delete(categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new));
+    }
+
     private boolean isParentCategory(CategoryDto categoryDto) {
         if(Objects.isNull(categoryDto.getParentId())) return false;
         return true;
     }
+
 }

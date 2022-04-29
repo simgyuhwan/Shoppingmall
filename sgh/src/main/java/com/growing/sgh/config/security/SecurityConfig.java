@@ -57,8 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/member/**").permitAll()
                 .antMatchers("/api/**").permitAll()
-                .antMatchers("/item/**").access("request.method == GET ? permitALL : hasRole('ADMIN')")
+                .antMatchers("/items/**").access("request.method == GET ? permitALL : hasRole('ADMIN')")
                 .antMatchers("/orders/**").hasAnyRole("MEMBER", "ADMIN")
+                .antMatchers("/category/**").access("request.method == GET ? permitALL : hasRole('ADMIN')")
                 .anyRequest().authenticated();
     }
 

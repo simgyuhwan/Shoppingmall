@@ -22,4 +22,13 @@ public class CategoryController {
         return Response.success();
     }
 
+    @DeleteMapping("/{categoryId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response delete(@PathVariable("categoryId")Long categoryId){
+        categoryService.categoryDelete(categoryId);
+        return Response.success();
+    }
+
+
+
 }
