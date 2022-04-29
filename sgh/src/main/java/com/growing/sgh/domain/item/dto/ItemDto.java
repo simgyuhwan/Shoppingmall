@@ -30,6 +30,9 @@ public class ItemDto {
     @NotBlank(message = "상품 상세 정보는 필수 입력 값입니다.")
     private String description;
 
+    @NotBlank(message = "카테고리는 반드시 선택해주세요.")
+    private Long categoryId;
+
     @JsonProperty("itemSellStatus")
     private ItemSellStatus itemSellStatus;
 
