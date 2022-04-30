@@ -31,9 +31,13 @@ public class SignService {
     @Transactional(readOnly = true)
     public SignInResponse signIn(SignInRequest req){
         Member member = memberRepository.findOneByUsername(req.getUsername()).orElseThrow(MemberNotFoundException::new);
-        if(!member.matchPassword(req.getPassword(), passwordEncoder)) throw new BadPasswordException();
+        validatePassword(req, member);
         String token = tokenProvider.createToken(member.getUsername(), member.getId());
         return new SignInResponse(token);
+    }
+
+    private void validatePassword(SignInRequest req, Member member) {
+        if(!member.matchPassword(req.getPassword(), passwordEncoder)) throw new BadPasswordException();
     }
 
     private void validateSignUp(SignUpRequest signUpRequest){

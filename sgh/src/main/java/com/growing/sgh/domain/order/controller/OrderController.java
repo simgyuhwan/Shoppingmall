@@ -23,8 +23,7 @@ public class OrderController {
 
     @PostMapping
     public Response order(@RequestBody @Validated OrderDto orderDto, @AuthenticationPrincipal User user) {
-        orderService.order(orderDto, ((CustomUser) user).getMemberId());
-        return Response.success();
+        return Response.success(orderService.order(orderDto, ((CustomUser) user).getMemberId()));
     }
 
     @PostMapping("/{orderId}/cancel")
