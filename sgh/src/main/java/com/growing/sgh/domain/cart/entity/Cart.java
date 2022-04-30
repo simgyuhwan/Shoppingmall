@@ -1,5 +1,6 @@
 package com.growing.sgh.domain.cart.entity;
 
+import com.growing.sgh.domain.member.entity.BaseEntity;
 import com.growing.sgh.domain.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Cart {
+public class Cart extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +24,12 @@ public class Cart {
     @Builder
     public Cart(Member member) {
         this.member = member;
+    }
+
+    public static Cart createCart(Member member){
+        return Cart.builder()
+                .member(member)
+                .build();
     }
 
 }
