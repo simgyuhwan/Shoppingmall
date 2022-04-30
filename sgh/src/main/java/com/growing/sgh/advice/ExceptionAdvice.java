@@ -4,10 +4,7 @@ import com.growing.sgh.common.response.Response;
 import com.growing.sgh.exception.item.ItemImgFileNotFoundException;
 import com.growing.sgh.exception.item.ItemNotFoundException;
 import com.growing.sgh.exception.item.RegisterImgNotExistsException;
-import com.growing.sgh.exception.member.EmailAlreadyExistsException;
-import com.growing.sgh.exception.member.MemberNotFoundException;
-import com.growing.sgh.exception.member.NicknameAlreadyExistsException;
-import com.growing.sgh.exception.member.UsernameAlreadyExistsException;
+import com.growing.sgh.exception.member.*;
 import com.growing.sgh.exception.order.OutOfStockException;
 import com.growing.sgh.exception.order.SoldOutItemException;
 import lombok.extern.slf4j.Slf4j;
@@ -75,6 +72,10 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(SoldOutItemException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Response SoldOutItemException(SoldOutItemException e ){return Response.failure(409, "판매 중지된 상품입니다.");}
+    public Response SoldOutItemException(SoldOutItemException e){return Response.failure(409, "판매 중지된 상품입니다.");}
+
+    @ExceptionHandler(BadPasswordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response BadPasswordException(BadPasswordException e){return Response.failure(400, "잘못된 비밀번호입니다.");}
 
 }
