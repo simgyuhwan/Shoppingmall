@@ -1,9 +1,11 @@
 package com.growing.sgh.domain.member.controller;
 
+import com.growing.sgh.common.annotation.AuthMember;
 import com.growing.sgh.common.response.Response;
 import com.growing.sgh.config.security.entity.CustomUser;
 import com.growing.sgh.domain.member.dto.ChangeMemberInfoDto;
 import com.growing.sgh.domain.member.dto.ChangePasswordDto;
+import com.growing.sgh.domain.member.entity.Member;
 import com.growing.sgh.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,15 +25,15 @@ public class MemberController {
     @PutMapping("/password")
     @ResponseStatus(HttpStatus.OK)
     public Response changePassword(@Validated @RequestBody ChangePasswordDto passwordDto,
-                                   @AuthenticationPrincipal User user){
-        memberService.changePassword(passwordDto, ((CustomUser) user).getMemberId() );
+                                   @AuthMember Member member){
+        memberService.changePassword(passwordDto, member.getId() );
         return success();
     }
     @PutMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
     public Response changeMemberInfo(@Validated @RequestBody ChangeMemberInfoDto memberInfo,
-                               @AuthenticationPrincipal User user){
-        memberService.changeMemberInfo(memberInfo, ((CustomUser) user).getMemberId());
+                                     @AuthMember Member member){
+        memberService.changeMemberInfo(memberInfo, member.getId());
         return success();
     }
 

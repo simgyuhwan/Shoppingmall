@@ -39,7 +39,7 @@ public class OrderService {
     private final ItemRepository itemRepository;
     private final ItemImgRepository itemImgRepository;
 
-    public void order(OrderDto orderDto, Long memberId){
+    public Long order(OrderDto orderDto, Long memberId){
         Item item = itemRepository.findById(orderDto.getItemId()).orElseThrow(ItemNotFoundException::new);
         checkSalesStatus(item);
 
@@ -51,6 +51,7 @@ public class OrderService {
         order.addOrderItem(orderItem);
 
         orderRepository.save(order);
+        return order.getId();
     }
 
     public void cancelOrder(Long orderId, long memberId) {

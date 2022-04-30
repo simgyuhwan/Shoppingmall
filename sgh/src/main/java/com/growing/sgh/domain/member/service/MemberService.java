@@ -26,7 +26,7 @@ public class MemberService {
 
     public void changePassword(ChangePasswordDto passwordDto,Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
-        member.changePassword(passwordDto.getOldPassword(),passwordDto.getNwPassword(), passwordEncoder);
+        member.changePassword(passwordDto.getOldPassword(), passwordDto.getNwPassword(), passwordEncoder);
     }
 
     private void duplicateNickname(String NwNickName){
