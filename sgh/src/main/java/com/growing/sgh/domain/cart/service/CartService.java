@@ -2,6 +2,7 @@ package com.growing.sgh.domain.cart.service;
 
 import com.growing.sgh.domain.cart.dto.CartDetailDto;
 import com.growing.sgh.domain.cart.dto.CartItemDto;
+import com.growing.sgh.domain.cart.dto.CartOrderDto;
 import com.growing.sgh.domain.cart.entity.Cart;
 import com.growing.sgh.domain.cart.entity.CartItem;
 import com.growing.sgh.domain.cart.repository.CartItemRepository;
@@ -10,6 +11,8 @@ import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.repository.ItemRepository;
 import com.growing.sgh.domain.member.entity.Member;
 import com.growing.sgh.domain.member.repository.MemberRepository;
+import com.growing.sgh.exception.cart.CartItemNotFoundException;
+import com.growing.sgh.exception.cart.NotOwnerCartException;
 import com.growing.sgh.exception.item.ItemImgNotFoundException;
 import com.growing.sgh.exception.member.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,7 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
     private final CartItemRepository cartItemRepository;
+    private final CartOrderService cartOrderService;
 
 
     public Long addCart(CartItemDto cartItemDto, Long memberId) {
@@ -50,12 +54,30 @@ public class CartService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<CartDetailDto> getCartList(Long memberId) {
         Cart cart = cartRepository.findByMemberId(memberId);
         List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
 
         if(Objects.isNull(cart)) return cartDetailDtoList;
         return cartItemRepository.findCartDetailDtoList(cart.getId());
+    }
+
+    public Long updateCartItemCount(Long cartItemId, Long memberId, int count) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(CartItemNotFoundException::new);
+        validateCart(memberId, cartItem.getCart());
+        cartItem.updateCount(count);
+        return cartItem.getId();
+    }
+
+    public void deleteCartItem(Long cartItemId, Long memberId) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(CartItemNotFoundException::new);
+        validateCart(memberId, cartItem.getCart());
+        cartItemRepository.deleteById(cartItemId);
+    }
+
+    private void validateCart(Long memberId, Cart cart) {
+        if(!cart.matchCartMember(memberId)) throw new NotOwnerCartException();
     }
 
     private void checkMemberCart(Cart cart, Member member) {
@@ -65,4 +87,23 @@ public class CartService {
         }
     }
 
+    public Long orderCartItem(CartOrderDto cartOrderDto, Long memberId) {
+        CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId()).orElseThrow(CartItemNotFoundException::new);
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        validateCart(memberId, cartItem.getCart());
+
+        List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
+        List<CartItem> cartItems = new ArrayList<>();
+        for (CartOrderDto cartDto : cartOrderDtoList) {
+            cartItems.add(cartItemRepository.findById(cartDto.getCartItemId()).orElseThrow(CartItemNotFoundException::new));
+        }
+
+        Long orderId = cartOrderService.orders(cartItems, member);
+
+        for (CartItem deleteCartItem : cartItems) {
+            cartItemRepository.delete(deleteCartItem);
+        }
+
+        return orderId;
+    }
 }

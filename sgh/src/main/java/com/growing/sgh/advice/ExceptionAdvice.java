@@ -1,6 +1,7 @@
 package com.growing.sgh.advice;
 
 import com.growing.sgh.common.response.Response;
+import com.growing.sgh.exception.cart.NotOwnerCartException;
 import com.growing.sgh.exception.item.ItemImgFileNotFoundException;
 import com.growing.sgh.exception.item.ItemNotFoundException;
 import com.growing.sgh.exception.item.RegisterImgNotExistsException;
@@ -77,5 +78,9 @@ public class ExceptionAdvice {
     @ExceptionHandler(BadPasswordException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response BadPasswordException(BadPasswordException e){return Response.failure(400, "잘못된 비밀번호입니다.");}
+
+    @ExceptionHandler(NotOwnerCartException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response NotOwnerCartException(NotOwnerCartException e){return Response.failure(400, "잘못된 사용자입니다.");}
 
 }

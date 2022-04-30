@@ -52,11 +52,11 @@ public class Order extends BaseEntity {
         orderItem.updateOrder(this);
     }
 
-    public static Order createOrder(Member member){
+    public static Order createOrder(Member member, List<OrderItem> orderItemList){
         return Order.builder()
                 .member(member)
                 .orderDate(LocalDateTime.now())
-                .orderItems(new ArrayList<>())
+                .orderItems(orderItemList)
                 .orderStatus(OrderStatus.PREPARING)
                 .build();
     }
