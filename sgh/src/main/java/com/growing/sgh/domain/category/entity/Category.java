@@ -1,6 +1,7 @@
 package com.growing.sgh.domain.category.entity;
 
 import com.growing.sgh.domain.category.dto.CategoryDto;
+import com.growing.sgh.domain.member.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Category {
+public class Category extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="category_id")

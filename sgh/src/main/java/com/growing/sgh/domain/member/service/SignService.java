@@ -24,7 +24,6 @@ public class SignService {
     public void signUp(SignUpRequest req){
         validateSignUp(req);
         Member member = SignUpRequest.toEntity(req, passwordEncoder);
-
         member.addAuth(new Role(member.getId(), RoleType.MEMBER));
         memberRepository.save(member);
     }
@@ -32,15 +31,11 @@ public class SignService {
     @Transactional(readOnly = true)
     public SignInResponse signIn(SignInRequest req){
         Member member = memberRepository.findOneByUsername(req.getUsername()).orElseThrow(MemberNotFoundException::new);
-        validatePassword(req.getPassword(), member);
+        if(!member.matchPassword(req.getPassword(), passwordEncoder)) throw new BadPasswordException();
         String token = tokenProvider.createToken(member.getUsername(), member.getId());
         return new SignInResponse(token);
     }
 
-    private void validatePassword(String password, Member member){
-        if(!passwordEncoder.matches(password, member.getPassword()))
-            throw new SignInFailureException();
-    }
     private void validateSignUp(SignUpRequest signUpRequest){
         if(memberRepository.existsByUsername(signUpRequest.getUsername()))
             throw new UsernameAlreadyExistsException(signUpRequest.getUsername());
