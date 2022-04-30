@@ -57,7 +57,7 @@ public class Order extends BaseEntity {
                 .member(member)
                 .orderDate(LocalDateTime.now())
                 .orderItems(new ArrayList<>())
-                .orderStatus(OrderStatus.ORDER)
+                .orderStatus(OrderStatus.PREPARING)
                 .build();
     }
 

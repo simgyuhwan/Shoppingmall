@@ -1,5 +1,7 @@
 package com.growing.sgh.domain.category.entity;
 
+import com.growing.sgh.domain.category.dto.CategoryDto;
+import com.growing.sgh.domain.member.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,11 +10,13 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Category {
+public class Category extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="category_id")
@@ -38,5 +42,14 @@ public class Category {
 
     public void changeParent(Category parent){
         this.parent = parent;
+        this.depth = parent.depth+1;
+    }
+
+    public void updateCategory(CategoryDto categoryDto) {
+        this.name = categoryDto.getName();
+    }
+
+    public boolean compareCategoryId(Long categoryId){
+        return this.id.equals(categoryId);
     }
 }

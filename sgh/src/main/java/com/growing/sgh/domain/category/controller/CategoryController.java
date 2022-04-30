@@ -22,4 +22,21 @@ public class CategoryController {
         return Response.success();
     }
 
+    @DeleteMapping("/{categoryId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response delete(@PathVariable("categoryId")Long categoryId){
+        categoryService.categoryDelete(categoryId);
+        return Response.success();
+    }
+
+    @PutMapping("/{categoryId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response update(@PathVariable("categoryId") Long categoryId, @RequestBody @Validated CategoryDto categoryDto){
+        categoryService.categoryUpdate(categoryId, categoryDto);
+        return Response.success();
+    }
+
+
+
+
 }

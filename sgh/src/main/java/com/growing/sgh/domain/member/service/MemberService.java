@@ -19,25 +19,19 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     public void changeMemberInfo(ChangeMemberInfoDto memberInfo, Long memberId){
-        duplicateNickname(memberInfo);
+        duplicateNickname(memberInfo.getNickname());
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
         member.changeInfo(memberInfo);
     }
 
     public void changePassword(ChangePasswordDto passwordDto,Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
-        validatePassword(passwordDto.getOldPassword(), member);
-        member.changePassword(passwordDto.getNwPassword(), passwordEncoder);
+        member.changePassword(passwordDto.getOldPassword(),passwordDto.getNwPassword(), passwordEncoder);
     }
 
-    private void validatePassword(String password, Member member){
-        if(!passwordEncoder.matches(password, member.getPassword()))
-            throw new SignInFailureException();
-    }
-
-    private void duplicateNickname(ChangeMemberInfoDto memberInfo){
-        if(memberRepository.existsByNickname(memberInfo.getNickname()))
-            throw new NicknameAlreadyExistsException(memberInfo.getNickname());
+    private void duplicateNickname(String NwNickName){
+        if(memberRepository.existsByNickname(NwNickName))
+            throw new NicknameAlreadyExistsException(NwNickName);
     }
 
 

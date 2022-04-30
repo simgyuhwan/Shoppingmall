@@ -2,6 +2,7 @@ package com.growing.sgh.domain.member.entity;
 
 import com.growing.sgh.domain.member.dto.ChangeMemberInfoDto;
 import com.growing.sgh.domain.member.dto.SignUpRequest;
+import com.growing.sgh.exception.member.BadPasswordException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,8 +54,18 @@ public class Member extends BaseEntity{
         this.phoneNum = phoneNum;
     }
 
-    public void changePassword(String nwPassword, PasswordEncoder passwordEncoder){
+    public void changePassword(String oldPassword, String nwPassword, PasswordEncoder passwordEncoder){
+        if(!matchPassword(oldPassword, passwordEncoder)) throw new BadPasswordException();
         this.password = passwordEncoder.encode(nwPassword);
+    }
+
+    public boolean matchPassword(String pwd, PasswordEncoder passwordEncoder){
+        return passwordEncoder.matches(pwd, password);
+    }
+
+    public void setPassword(String newPw){
+        if(newPw.isEmpty()) throw new IllegalArgumentException(("no new password"));
+        this.password = newPw;
     }
 
     public void changeInfo(ChangeMemberInfoDto memberInfo){
