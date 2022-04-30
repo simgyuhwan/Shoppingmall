@@ -7,6 +7,10 @@ spring:
       show-sql: true
     properties:
       hibernate.format_sql: true
+  mvc:
+    pathmatch:
+      # Swagger 3.0 error
+      matching-strategy: ant_path_matcher
 
   h2:
     console:
@@ -24,3 +28,11 @@ jwt:
 
 file:
   itemimgLocation: C:/shop/item
+
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
