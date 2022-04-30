@@ -28,7 +28,7 @@ public class JwtTokenProvider {
 
         String token = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(signKey), SignatureAlgorithm.HS512)
-                .setHeaderParam("typ", SecurityConstants.Token_TYPE)
+                .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(jwtProperties.getTokenValidityInSeconds())))
                 .claim("unm", username)
                 .claim("mid", "" + memberId)
@@ -42,7 +42,7 @@ public class JwtTokenProvider {
 
         String token = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(signKey), SignatureAlgorithm.HS512)
-                .setHeaderParam("typ", SecurityConstants.Token_TYPE)
+                .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(jwtProperties.getTokenValidityInSeconds())))
                 .claim("unm", username)
                 .claim("mid", "" + memberId)
