@@ -43,7 +43,7 @@ public class ItemService {
     public Item itemUpdate(Long itemId,ItemDto updateItemDto) throws IOException {
         Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         item.updateItem(updateItemDto);
-        if(!item.getCategory().getId().equals(updateItemDto.getCategoryId())) changeCategory(updateItemDto, item);
+        if(!item.compareCategoryId(updateItemDto.getCategoryId())) changeCategory(updateItemDto, item);
         return item;
     }
 
@@ -60,4 +60,5 @@ public class ItemService {
     public Page<Item> getItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         return itemRepository.getItemPage(itemSearchDto, pageable);
     }
+
 }

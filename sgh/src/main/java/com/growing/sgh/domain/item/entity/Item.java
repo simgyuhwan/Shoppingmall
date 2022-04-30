@@ -72,4 +72,8 @@ public class Item extends BaseEntity {
         this.category = category;
     }
 
+    public boolean compareCategoryId(Long categoryId){
+        return this.category.compareCategoryId(categoryId);
+    }
+
 }

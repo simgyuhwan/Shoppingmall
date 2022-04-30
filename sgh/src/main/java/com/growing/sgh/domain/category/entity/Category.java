@@ -47,4 +47,8 @@ public class Category {
     public void updateCategory(CategoryDto categoryDto) {
         this.name = categoryDto.getName();
     }
+
+    public boolean compareCategoryId(Long categoryId){
+        return this.id.equals(categoryId);
+    }
 }
