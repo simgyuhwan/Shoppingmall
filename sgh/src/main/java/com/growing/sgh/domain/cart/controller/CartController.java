@@ -24,4 +24,10 @@ public class CartController {
         return Response.success(cartService.addCart(cartItemDto, member.getId()));
     }
 
+    @GetMapping
+    public Response getCartItems(@AuthMember Member member){
+        cartService.getCartList(member.getId());
+        return Response.success();
+    }
+
 }

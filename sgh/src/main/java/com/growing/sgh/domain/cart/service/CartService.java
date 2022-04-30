@@ -1,5 +1,6 @@
 package com.growing.sgh.domain.cart.service;
 
+import com.growing.sgh.domain.cart.dto.CartDetailDto;
 import com.growing.sgh.domain.cart.dto.CartItemDto;
 import com.growing.sgh.domain.cart.entity.Cart;
 import com.growing.sgh.domain.cart.entity.CartItem;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -47,10 +50,19 @@ public class CartService {
         }
     }
 
+    public List<CartDetailDto> getCartList(Long memberId) {
+        Cart cart = cartRepository.findByMemberId(memberId);
+        List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
+
+        if(Objects.isNull(cart)) return cartDetailDtoList;
+        return cartItemRepository.findCartDetailDtoList(cart.getId());
+    }
+
     private void checkMemberCart(Cart cart, Member member) {
         if(Objects.isNull(cart)){
             cart = Cart.createCart(member);
             cartRepository.save(cart);
         }
     }
+
 }
