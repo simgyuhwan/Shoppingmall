@@ -2,6 +2,7 @@ package com.growing.sgh.domain.cart.service;
 
 import com.growing.sgh.domain.cart.dto.CartDetailDto;
 import com.growing.sgh.domain.cart.dto.CartItemDto;
+import com.growing.sgh.domain.cart.dto.CartOrderDto;
 import com.growing.sgh.domain.cart.entity.Cart;
 import com.growing.sgh.domain.cart.entity.CartItem;
 import com.growing.sgh.domain.cart.repository.CartItemRepository;
@@ -30,6 +31,7 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
     private final CartItemRepository cartItemRepository;
+    private final CartOrderService cartOrderService;
 
 
     public Long addCart(CartItemDto cartItemDto, Long memberId) {
@@ -61,6 +63,23 @@ public class CartService {
         return cartItemRepository.findCartDetailDtoList(cart.getId());
     }
 
+    public Long updateCartItemCount(Long cartItemId, Long memberId, int count) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(CartItemNotFoundException::new);
+        validateCart(memberId, cartItem.getCart());
+        cartItem.updateCount(count);
+        return cartItem.getId();
+    }
+
+    public void deleteCartItem(Long cartItemId, Long memberId) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(CartItemNotFoundException::new);
+        validateCart(memberId, cartItem.getCart());
+        cartItemRepository.deleteById(cartItemId);
+    }
+
+    private void validateCart(Long memberId, Cart cart) {
+        if(!cart.matchCartMember(memberId)) throw new NotOwnerCartException();
+    }
+
     private void checkMemberCart(Cart cart, Member member) {
         if(Objects.isNull(cart)){
             cart = Cart.createCart(member);
@@ -68,22 +87,23 @@ public class CartService {
         }
     }
 
-    public Long updateCartItemCount(Long cartItemId, Long memberId, int count) {
-        Cart cart = cartRepository.findByMemberId(memberId);
-        validateCart(memberId, cart);
+    public Long orderCartItem(CartOrderDto cartOrderDto, Long memberId) {
+        CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId()).orElseThrow(CartItemNotFoundException::new);
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        validateCart(memberId, cartItem.getCart());
 
-        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(CartItemNotFoundException::new);
-        cartItem.updateCount(count);
-        return cartItem.getId();
-    }
+        List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
+        List<CartItem> cartItems = new ArrayList<>();
+        for (CartOrderDto cartDto : cartOrderDtoList) {
+            cartItems.add(cartItemRepository.findById(cartDto.getCartItemId()).orElseThrow(CartItemNotFoundException::new));
+        }
 
-    private void validateCart(Long memberId, Cart cart) {
-        if(!cart.matchCartMember(memberId)) throw new NotOwnerCartException();
-    }
+        Long orderId = cartOrderService.orders(cartItems, member);
 
-    public void deleteCartItem(Long cartItemId, Long memberId) {
-        Cart cart = cartRepository.findByMemberId(memberId);
-        validateCart(memberId, cart);
-        cartItemRepository.deleteById(cartItemId);
+        for (CartItem deleteCartItem : cartItems) {
+            cartItemRepository.delete(deleteCartItem);
+        }
+
+        return orderId;
     }
 }

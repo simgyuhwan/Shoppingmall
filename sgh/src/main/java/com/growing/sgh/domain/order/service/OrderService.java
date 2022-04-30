@@ -45,10 +45,10 @@ public class OrderService {
 
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
-        OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getCount());
+        List<OrderItem> orderItemList = new ArrayList<>();
+        orderItemList.add(OrderItem.createOrderItem(item, orderDto.getCount()));
 
-        Order order = Order.createOrder(member);
-        order.addOrderItem(orderItem);
+        Order order = Order.createOrder(member, orderItemList);
 
         orderRepository.save(order);
         return order.getId();

@@ -3,6 +3,7 @@ package com.growing.sgh.domain.cart.controller;
 import com.growing.sgh.common.annotation.AuthMember;
 import com.growing.sgh.common.response.Response;
 import com.growing.sgh.domain.cart.dto.CartItemDto;
+import com.growing.sgh.domain.cart.dto.CartOrderDto;
 import com.growing.sgh.domain.cart.service.CartService;
 import com.growing.sgh.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,12 @@ public class CartController {
     public Response deleteCartItem(@PathVariable("cartItemId") Long cartItemId, @AuthMember Member member){
         cartService.deleteCartItem(cartItemId, member.getId());
         return Response.success();
+    }
+
+    @PostMapping("/cart/orders")
+    @ResponseStatus(HttpStatus.OK)
+    public Response orderCartItem(@RequestBody CartOrderDto cartOrderDto, @AuthMember Member member){
+        return Response.success(cartService.orderCartItem(cartOrderDto, member.getId()));
     }
 
 }
