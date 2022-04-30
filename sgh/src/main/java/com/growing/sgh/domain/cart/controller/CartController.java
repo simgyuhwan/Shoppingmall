@@ -25,8 +25,22 @@ public class CartController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public Response getCartItems(@AuthMember Member member){
-        cartService.getCartList(member.getId());
+        return Response.success(cartService.getCartList(member.getId()));
+    }
+
+    @PutMapping("/cartItem/{cartItemId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response updateCartItem(@PathVariable("cartItemId") Long cartItemId, int count, @AuthMember Member member){
+        if(count <= 0) return Response.failure(400, "최소 1개 이상 담아주세요.");
+        return Response.success(cartService.updateCartItemCount(cartItemId, member.getId(), count));
+    }
+
+    @DeleteMapping("/cartItem/{cartItemId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response deleteCartItem(@PathVariable("cartItemId") Long cartItemId, @AuthMember Member member){
+        cartService.deleteCartItem(cartItemId, member.getId());
         return Response.success();
     }
 

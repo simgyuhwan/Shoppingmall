@@ -32,4 +32,8 @@ public class Cart extends BaseEntity {
                 .build();
     }
 
+    public boolean matchCartMember(Long memberId){
+        return member.getId().equals(memberId);
+    }
+
 }

@@ -10,6 +10,8 @@ import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.repository.ItemRepository;
 import com.growing.sgh.domain.member.entity.Member;
 import com.growing.sgh.domain.member.repository.MemberRepository;
+import com.growing.sgh.exception.cart.CartItemNotFoundException;
+import com.growing.sgh.exception.cart.NotOwnerCartException;
 import com.growing.sgh.exception.item.ItemImgNotFoundException;
 import com.growing.sgh.exception.member.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +52,7 @@ public class CartService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<CartDetailDto> getCartList(Long memberId) {
         Cart cart = cartRepository.findByMemberId(memberId);
         List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
@@ -65,4 +68,22 @@ public class CartService {
         }
     }
 
+    public Long updateCartItemCount(Long cartItemId, Long memberId, int count) {
+        Cart cart = cartRepository.findByMemberId(memberId);
+        validateCart(memberId, cart);
+
+        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(CartItemNotFoundException::new);
+        cartItem.updateCount(count);
+        return cartItem.getId();
+    }
+
+    private void validateCart(Long memberId, Cart cart) {
+        if(!cart.matchCartMember(memberId)) throw new NotOwnerCartException();
+    }
+
+    public void deleteCartItem(Long cartItemId, Long memberId) {
+        Cart cart = cartRepository.findByMemberId(memberId);
+        validateCart(memberId, cart);
+        cartItemRepository.deleteById(cartItemId);
+    }
 }
