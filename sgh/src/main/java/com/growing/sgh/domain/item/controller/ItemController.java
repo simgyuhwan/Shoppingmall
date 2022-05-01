@@ -8,6 +8,7 @@ import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.service.ItemImgService;
 import com.growing.sgh.domain.item.service.ItemService;
 import com.growing.sgh.exception.item.RegisterImgNotExistsException;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +37,7 @@ public class ItemController {
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public Response register(@Validated @RequestBody ItemDto itemDto,
-                             @RequestPart("itemImgFile")List<MultipartFile> itemImgList) throws IOException {
+                             @Parameter(hidden = true) @RequestPart("itemImgFile")List<MultipartFile> itemImgList) throws IOException {
         validateImgFile(itemImgList);
         itemService.itemRegister(itemDto, itemImgList);
         return success();
@@ -52,7 +53,7 @@ public class ItemController {
     @PutMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
     public Response update(@PathVariable Long itemId, @Validated @RequestBody ItemDto itemDto,
-                           @RequestPart("itemImgFile") List<MultipartFile> itemImgList) throws IOException {
+                          @Parameter(hidden = true) @RequestPart("itemImgFile") List<MultipartFile> itemImgList) throws IOException {
         validateImgFile(itemImgList);
         Item item = itemService.itemUpdate(itemId, itemDto);
         return success(ItemDto.of(item,itemImgService.itemImgUpdate(item,
@@ -73,7 +74,7 @@ public class ItemController {
         return success(itemService.getItemPage(itemSearchDto, pageable));
     }
 
-    private void validateImgFile(List<MultipartFile> itemImgList) {
+    private void validateImgFile(@Parameter(hidden = true) List<MultipartFile> itemImgList) {
         if(itemImgList.get(0).isEmpty()) throw new RegisterImgNotExistsException();
     }
 

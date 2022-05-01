@@ -1,6 +1,5 @@
 package com.growing.sgh.domain.item.service;
 
-import com.growing.sgh.domain.category.entity.Category;
 import com.growing.sgh.domain.category.repository.CategoryRepository;
 import com.growing.sgh.domain.item.dto.ItemDto;
 import com.growing.sgh.domain.item.dto.ItemSearchDto;
@@ -9,6 +8,7 @@ import com.growing.sgh.domain.item.repository.ItemImgRepository;
 import com.growing.sgh.domain.item.repository.ItemRepository;
 import com.growing.sgh.exception.category.CategoryNotFoundException;
 import com.growing.sgh.exception.item.ItemNotFoundException;
+import com.growing.sgh.helper.ServiceFindHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +41,7 @@ public class ItemService {
     }
 
     public Item itemUpdate(Long itemId,ItemDto updateItemDto) throws IOException {
-        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
+        Item item = ServiceFindHelper.findExistingItem(itemRepository, itemId);
         item.updateItem(updateItemDto);
         if(!item.compareCategoryId(updateItemDto.getCategoryId())) changeCategory(updateItemDto, item);
         return item;
@@ -53,7 +53,7 @@ public class ItemService {
 
     @Transactional(readOnly = true)
     public Item getItemDtl(Long itemId){
-        return itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
+        return ServiceFindHelper.findExistingItem(itemRepository, itemId);
     }
 
     @Transactional(readOnly = true)

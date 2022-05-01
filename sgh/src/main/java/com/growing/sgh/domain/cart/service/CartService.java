@@ -10,11 +10,13 @@ import com.growing.sgh.domain.cart.repository.CartRepository;
 import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.repository.ItemRepository;
 import com.growing.sgh.domain.member.entity.Member;
+import com.growing.sgh.domain.member.helper.MemberServiceHelper;
 import com.growing.sgh.domain.member.repository.MemberRepository;
 import com.growing.sgh.exception.cart.CartItemNotFoundException;
 import com.growing.sgh.exception.cart.NotOwnerCartException;
 import com.growing.sgh.exception.item.ItemImgNotFoundException;
 import com.growing.sgh.exception.member.MemberNotFoundException;
+import com.growing.sgh.helper.ServiceFindHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +38,8 @@ public class CartService {
 
     public Long addCart(CartItemDto cartItemDto, Long memberId) {
         Item item = itemRepository.findById(cartItemDto.getItemId()).orElseThrow(ItemImgNotFoundException::new);
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
-        Cart cart = cartRepository.findByMemberId(memberId);
+        Member member = ServiceFindHelper.findExistingMember(memberRepository, memberId);
+        Cart cart = ServiceFindHelper.findExistingCartByMemberId(cartRepository,memberId);
 
         // 첫 장바구니 사용시, 장바구니 생성
         checkMemberCart(cart, member);
@@ -56,7 +58,7 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public List<CartDetailDto> getCartList(Long memberId) {
-        Cart cart = cartRepository.findByMemberId(memberId);
+        Cart cart = ServiceFindHelper.findExistingCartByMemberId(cartRepository,memberId);
         List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
 
         if(Objects.isNull(cart)) return cartDetailDtoList;
@@ -64,14 +66,14 @@ public class CartService {
     }
 
     public Long updateCartItemCount(Long cartItemId, Long memberId, int count) {
-        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(CartItemNotFoundException::new);
+        CartItem cartItem = ServiceFindHelper.findExistingCartItem(cartItemRepository, cartItemId);
         validateCart(memberId, cartItem.getCart());
         cartItem.updateCount(count);
         return cartItem.getId();
     }
 
     public void deleteCartItem(Long cartItemId, Long memberId) {
-        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(CartItemNotFoundException::new);
+        CartItem cartItem = ServiceFindHelper.findExistingCartItem(cartItemRepository, cartItemId);
         validateCart(memberId, cartItem.getCart());
         cartItemRepository.deleteById(cartItemId);
     }
@@ -88,14 +90,14 @@ public class CartService {
     }
 
     public Long orderCartItem(CartOrderDto cartOrderDto, Long memberId) {
-        CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId()).orElseThrow(CartItemNotFoundException::new);
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        CartItem cartItem = ServiceFindHelper.findExistingCartItem(cartItemRepository, cartOrderDto.getCartItemId());
+        Member member = ServiceFindHelper.findExistingMember(memberRepository, memberId);
         validateCart(memberId, cartItem.getCart());
 
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
         List<CartItem> cartItems = new ArrayList<>();
         for (CartOrderDto cartDto : cartOrderDtoList) {
-            cartItems.add(cartItemRepository.findById(cartDto.getCartItemId()).orElseThrow(CartItemNotFoundException::new));
+            cartItems.add(ServiceFindHelper.findExistingCartItem(cartItemRepository, cartDto.getCartItemId()));
         }
 
         Long orderId = cartOrderService.orders(cartItems, member);

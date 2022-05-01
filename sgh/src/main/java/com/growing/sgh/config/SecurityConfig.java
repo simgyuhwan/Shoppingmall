@@ -1,5 +1,6 @@
-package com.growing.sgh.config.security;
+package com.growing.sgh.config;
 
+import com.growing.sgh.config.security.CustomUserDetailService;
 import com.growing.sgh.config.security.filter.JwtRequestFilter;
 import com.growing.sgh.config.security.handler.JwtAccessDeniedHandler;
 import com.growing.sgh.config.security.handler.JwtAuthenticationEntryPoint;
@@ -86,14 +87,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/v2/api-docs","/swagger-ui/**","/bus/v3/api-docs/**" ,"/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
+                .antMatchers("/swagger-ui/**","/v3/api-docs/**"
+                        ,"/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService())
                 .passwordEncoder(passwordEncoder());
-
     }
 
     @Bean
