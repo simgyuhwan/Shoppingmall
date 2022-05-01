@@ -13,11 +13,9 @@ import com.growing.sgh.domain.order.dto.OrderItemDto;
 import com.growing.sgh.domain.order.entity.Order;
 import com.growing.sgh.domain.order.entity.OrderItem;
 import com.growing.sgh.domain.order.repository.OrderRepository;
-import com.growing.sgh.exception.item.ItemNotFoundException;
 import com.growing.sgh.exception.member.MemberDoesNotMatchException;
-import com.growing.sgh.exception.member.MemberNotFoundException;
-import com.growing.sgh.exception.order.OrderNotFoundException;
 import com.growing.sgh.exception.order.SoldOutItemException;
+import com.growing.sgh.helper.ServiceFindHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -40,10 +38,10 @@ public class OrderService {
     private final ItemImgRepository itemImgRepository;
 
     public Long order(OrderDto orderDto, Long memberId){
-        Item item = itemRepository.findById(orderDto.getItemId()).orElseThrow(ItemNotFoundException::new);
+        Item item = ServiceFindHelper.findExistingItem(itemRepository, orderDto.getItemId());
         checkSalesStatus(item);
 
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = ServiceFindHelper.findExistingMember(memberRepository, memberId);
 
         List<OrderItem> orderItemList = new ArrayList<>();
         orderItemList.add(OrderItem.createOrderItem(item, orderDto.getCount()));
@@ -55,8 +53,8 @@ public class OrderService {
     }
 
     public void cancelOrder(Long orderId, long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
-        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        Member member = ServiceFindHelper.findExistingMember(memberRepository, memberId);
+        Order order = ServiceFindHelper.findExistingOrder(orderRepository, orderId);
 
         validateOrder(member, order);
 

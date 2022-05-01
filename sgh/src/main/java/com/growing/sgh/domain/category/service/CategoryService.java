@@ -5,6 +5,7 @@ import com.growing.sgh.domain.category.entity.Category;
 import com.growing.sgh.domain.category.repository.CategoryRepository;
 import com.growing.sgh.domain.item.repository.ItemRepository;
 import com.growing.sgh.exception.category.CategoryNotFoundException;
+import com.growing.sgh.helper.ServiceFindHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ public class CategoryService {
         if(!isParentCategory(categoryDto)){
             category = CategoryDto.toEntity(categoryDto, 1L);
         }else {
-            Category parentCategory = categoryRepository.findById(categoryDto.getParentId()).orElseThrow(CategoryNotFoundException::new);
+            Category parentCategory = ServiceFindHelper.findExistingCategory(categoryRepository, categoryDto.getParentId());
             category = CategoryDto.toEntity(categoryDto, parentCategory.getDepth()+1);
             category.changeParent(parentCategory);
         }
@@ -36,10 +37,10 @@ public class CategoryService {
 
 
     public void categoryUpdate(Long categoryId, CategoryDto categoryDto) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        Category category = ServiceFindHelper.findExistingCategory(categoryRepository, categoryId);
         category.updateCategory(categoryDto);
         if(isParentCategory(categoryDto) && !compareCategoryParent(categoryDto, category)){
-            Category parentCategory = categoryRepository.findById(categoryDto.getParentId()).orElseThrow(CategoryNotFoundException::new);
+            Category parentCategory = ServiceFindHelper.findExistingCategory(categoryRepository, categoryDto.getParentId());
             category.changeParent(parentCategory);
         }
     }
