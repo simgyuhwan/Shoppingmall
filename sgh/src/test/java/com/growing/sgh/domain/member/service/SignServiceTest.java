@@ -12,10 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class SignServiceTest {
-    @InjectMocks MemberService memberService;
+    @InjectMocks SignService signService;
     @Mock
     MemberRepository memberRepository;
-
 
 
 }

@@ -7,6 +7,7 @@ import com.growing.sgh.domain.member.dto.ChangeMemberInfoDto;
 import com.growing.sgh.domain.member.dto.ChangePasswordDto;
 import com.growing.sgh.domain.member.entity.Member;
 import com.growing.sgh.domain.member.service.MemberService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,6 +36,12 @@ public class MemberController {
                                      @AuthMember Member member){
         memberService.changeMemberInfo(memberInfo, member.getId());
         return success();
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Response getMemberInfo(@AuthMember Member member){
+        return Response.success(memberService.getMemberInfo(member.getId()));
     }
 
 }
