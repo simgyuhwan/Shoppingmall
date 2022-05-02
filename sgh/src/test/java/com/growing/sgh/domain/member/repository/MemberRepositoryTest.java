@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class MemberRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
-
     @PersistenceContext
     EntityManager em;
 
