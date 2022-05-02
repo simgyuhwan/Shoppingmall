@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,22 +46,25 @@ public class Member extends BaseEntity{
     private Collection<Role> authorities = new ArrayList<>();
 
     @Builder
-    public Member(String username, String password, String nickname, String email, String address,String phoneNum) {
+    public Member(String username, String password, String nickname, String email, String address,
+                  String phoneNum, List<Role> roles) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
         this.address = address;
         this.phoneNum = phoneNum;
+        this.authorities = roles;
     }
 
     public void changePassword(String oldPassword, String nwPassword, PasswordEncoder passwordEncoder){
-        if(!matchPassword(oldPassword, passwordEncoder)) throw new BadPasswordException();
+        if(!matchPassword(oldPassword, passwordEncoder))
+            throw new BadPasswordException();
         this.password = passwordEncoder.encode(nwPassword);
     }
 
-    public boolean matchPassword(String pwd, PasswordEncoder passwordEncoder){
-        return passwordEncoder.matches(pwd, password);
+    public boolean matchPassword(String oldPwd, PasswordEncoder passwordEncoder){
+        return passwordEncoder.matches(oldPwd, this.password);
     }
 
     public void setPassword(String newPw){
@@ -70,7 +74,7 @@ public class Member extends BaseEntity{
 
     public void changeInfo(ChangeMemberInfoDto memberInfo){
         this.nickname = memberInfo.getNickname();
-        this.address = memberInfo.getNickname();
+        this.address = memberInfo.getAddress();
         this.phoneNum = memberInfo.getPhoneNum();
     }
 

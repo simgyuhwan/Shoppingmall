@@ -26,7 +26,7 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findOneByUsername(username).orElseThrow(EntityExistsException::new);
+        Member member = memberRepository.findByUsername(username).orElseThrow(EntityExistsException::new);
         List<SimpleGrantedAuthority> authorities = member.getAuthorities().stream().map(role -> new SimpleGrantedAuthority(role.getRoleType().toString()))
                 .collect(Collectors.toList());
         return member == null? null: new CustomUser(member, authorities);
