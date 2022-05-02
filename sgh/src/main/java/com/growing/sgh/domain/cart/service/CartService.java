@@ -10,7 +10,6 @@ import com.growing.sgh.domain.cart.repository.CartRepository;
 import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.repository.ItemRepository;
 import com.growing.sgh.domain.member.entity.Member;
-import com.growing.sgh.domain.member.helper.MemberServiceHelper;
 import com.growing.sgh.domain.member.repository.MemberRepository;
 import com.growing.sgh.exception.cart.CartItemNotFoundException;
 import com.growing.sgh.exception.cart.NotOwnerCartException;

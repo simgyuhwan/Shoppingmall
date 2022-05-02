@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class SignService {
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
@@ -30,7 +31,7 @@ public class SignService {
 
     @Transactional(readOnly = true)
     public SignInResponse signIn(SignInRequest req){
-        Member member = memberRepository.findOneByUsername(req.getUsername()).orElseThrow(MemberNotFoundException::new);
+        Member member = memberRepository.findByUsername(req.getUsername()).orElseThrow(MemberNotFoundException::new);
         validatePassword(req, member);
         String token = tokenProvider.createToken(member.getUsername(), member.getId());
         return new SignInResponse(token);

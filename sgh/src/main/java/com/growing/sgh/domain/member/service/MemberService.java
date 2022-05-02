@@ -34,4 +34,7 @@ public class MemberService {
     }
 
 
+    public MemberInfoDto getMemberInfo(Long memberId) {
+        return MemberInfoDto.of(ServiceFindHelper.findExistingMember(memberRepository, memberId));
+    }
 }
