@@ -57,7 +57,6 @@ class MemberRepositoryTest {
         assertThat(findMember.getRegTime()).isNotNull();
         assertThat(findMember.getUpdateTime()).isNotNull();
         assertThat(findMember.getRegTime()).isEqualTo(findMember.getUpdateTime());
-
     }
 
     @Test
