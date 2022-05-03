@@ -56,6 +56,16 @@ public class Member extends BaseEntity{
         this.phoneNum = phoneNum;
         this.authorities = roles;
     }
+    public Member(String username, String password, String nickname, String email, String address,
+                  String phoneNum) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
+        this.address = address;
+        this.phoneNum = phoneNum;
+        this.authorities = new ArrayList<>();
+    }
 
     public void changePassword(String oldPassword, String nwPassword, PasswordEncoder passwordEncoder){
         if(!matchPassword(oldPassword, passwordEncoder))

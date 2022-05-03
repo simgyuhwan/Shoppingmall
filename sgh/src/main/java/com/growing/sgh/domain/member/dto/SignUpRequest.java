@@ -2,6 +2,7 @@ package com.growing.sgh.domain.member.dto;
 
 import com.growing.sgh.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +14,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class SignUpRequest {
 
@@ -41,15 +41,19 @@ public class SignUpRequest {
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})", message = "번호를 바르게 입력해주세요.")
     private String phoneNum;
 
+    @Builder
+    public SignUpRequest(String username, String password, String nickname, String email, String address, String phoneNum) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
+        this.address = address;
+        this.phoneNum = phoneNum;
+    }
+
     public static Member toEntity(SignUpRequest signUpRequest, PasswordEncoder passwordEncoder){
-        return Member.builder()
-                .username(signUpRequest.getUsername())
-                .nickname(signUpRequest.getNickname())
-                .password(passwordEncoder.encode(signUpRequest.getPassword()))
-                .email(signUpRequest.getEmail())
-                .address(signUpRequest.getAddress())
-                .phoneNum(signUpRequest.getPhoneNum())
-                .build();
+        return new Member(signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getNickname(),
+                signUpRequest.getEmail(), signUpRequest.getAddress(), signUpRequest.phoneNum);
     }
 
 
