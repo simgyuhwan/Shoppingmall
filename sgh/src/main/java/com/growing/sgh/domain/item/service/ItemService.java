@@ -25,7 +25,6 @@ import java.util.List;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private final ItemImgRepository itemImgRepository;
     private final ItemImgService itemImgService;
     private final CategoryRepository categoryRepository;
 

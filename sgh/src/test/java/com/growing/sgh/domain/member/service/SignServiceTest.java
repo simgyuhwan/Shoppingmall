@@ -34,8 +34,6 @@ class SignServiceTest {
     @Mock
     PasswordEncoder passwordEncoder;
     @Mock
-    Member member;
-    @Mock
     JwtTokenProvider tokenProvider;
 
 
@@ -57,13 +55,11 @@ class SignServiceTest {
     @Test
     @DisplayName("로그인 테스트")
     void signInTest(){
-        // given
-        // when
-        // then
+
     }
 
     private SignInRequest createSignMember(){
-        return new SignInRequest("test", "password");
+        return new SignInRequest("test", "1111");
     }
 
     private Member createMember(){
