@@ -3,6 +3,7 @@ package com.growing.sgh.domain.member.service;
 import com.growing.sgh.domain.member.dto.*;
 import com.growing.sgh.domain.member.entity.Member;
 import com.growing.sgh.domain.member.repository.MemberRepository;
+import com.growing.sgh.exception.member.MemberNotFoundException;
 import com.growing.sgh.exception.member.NicknameAlreadyExistsException;
 import com.growing.sgh.helper.ServiceFindHelper;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,12 @@ public class MemberService {
             throw new NicknameAlreadyExistsException(NwNickName);
     }
 
-
     public MemberInfoDto getMemberInfo(Long memberId) {
         return MemberInfoDto.of(ServiceFindHelper.findExistingMember(memberRepository, memberId));
+    }
+
+    public void deleteMember(Long memberId) {
+        Member member = ServiceFindHelper.findExistingMember(memberRepository, memberId);
+        memberRepository.delete(member);
     }
 }

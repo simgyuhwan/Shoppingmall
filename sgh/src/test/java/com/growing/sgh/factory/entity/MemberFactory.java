@@ -38,7 +38,7 @@ public class MemberFactory {
                 .email("test1@test.com")
                 .build();
     }
-        public static Member createMember(String username, String password, String email, String nickname){
+    public static Member createMember(String username, String password, String email, String nickname){
         return Member.builder()
                 .username(username)
                 .password(password)
