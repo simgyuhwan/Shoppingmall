@@ -31,5 +31,4 @@ public class SignController {
     public Response signin(@Validated @RequestBody SignInRequest req){
         return success(signService.signIn(req));
     }
-
 }

@@ -38,10 +38,17 @@ public class MemberController {
         return success();
     }
 
-    @GetMapping
+    @GetMapping("/{memberId}")
     @ResponseStatus(HttpStatus.OK)
-    public Response getMemberInfo(@AuthMember Member member){
-        return Response.success(memberService.getMemberInfo(member.getId()));
+    public Response getMemberInfo(@PathVariable Long memberId){
+        return Response.success(memberService.getMemberInfo(memberId));
+    }
+
+    @DeleteMapping("/{memberId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response deleteMember(@PathVariable Long memberId){
+        memberService.deleteMember(memberId);
+        return success();
     }
 
 }
