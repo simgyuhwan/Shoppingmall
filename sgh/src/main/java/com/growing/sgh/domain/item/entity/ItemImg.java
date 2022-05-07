@@ -38,6 +38,14 @@ public class ItemImg extends BaseEntity {
         this.repImgYn = "N";
     }
 
+    public ItemImg(String imgName, String oriImgName, String imgUrl, String repImgYn, Item item) {
+        this.imgName = imgName;
+        this.oriImgName = oriImgName;
+        this.imgUrl = imgUrl;
+        this.repImgYn = repImgYn;
+        this.item = item;
+    }
+
     public void RepImg(){
         this.repImgYn = "Y";
     }

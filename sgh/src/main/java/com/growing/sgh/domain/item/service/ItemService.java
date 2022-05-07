@@ -27,7 +27,6 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final ItemImgService itemImgService;
-    private final CategoryRepository categoryRepository;
 
     public void itemRegister(ItemDto registerItemDto, List<MultipartFile> itemImgList, Category category) throws IOException {
         Item item = ItemDto.toEntity(registerItemDto);
@@ -45,11 +44,6 @@ public class ItemService {
         item.updateItem(updateItemDto, category);
         return item;
     }
-
-    private void changeCategory(ItemDto updateItemDto, Item item) {
-        item.updateCategory(categoryRepository.findById(updateItemDto.getCategoryId()).orElseThrow(CategoryNotFoundException::new));
-    }
-
     @Transactional(readOnly = true)
     public Item getItemDtl(Long itemId){
         return ServiceFindHelper.findExistingItem(itemRepository, itemId);

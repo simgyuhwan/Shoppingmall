@@ -57,7 +57,7 @@ public class ItemController {
     public Response update(@PathVariable Long itemId, @Validated @RequestBody ItemDto itemDto,
                           @Parameter(hidden = true) @RequestPart("itemImgFile") List<MultipartFile> itemImgList) throws IOException {
         validateImgFile(itemImgList);
-        Item item = itemService.itemUpdate(itemId, itemDto,categoryService.getCategory(itemDto.getCategoryId()));
+        Item item = itemService.itemUpdate(itemId, itemDto,categoryService.getCategory(itemDto.getCategoryId()))    ;
         return success(ItemDto.of(item,itemImgService.itemImgUpdate(item,
                 itemImgList).stream().map(itemImg -> ItemImgDto.of(itemImg)).collect(Collectors.toList())));
     }
