@@ -15,6 +15,7 @@ import com.growing.sgh.domain.order.repository.OrderRepository;
 import com.growing.sgh.exception.cart.CartItemNotFoundException;
 import com.growing.sgh.exception.category.CategoryNotFoundException;
 import com.growing.sgh.exception.item.ItemImgNotFoundException;
+import com.growing.sgh.exception.item.ItemNotFoundException;
 import com.growing.sgh.exception.member.MemberNotFoundException;
 import com.growing.sgh.exception.order.OrderNotFoundException;
 
@@ -25,7 +26,7 @@ public class ServiceFindHelper {
     }
 
     public static Item findExistingItem(ItemRepository repository, Long itemId){
-        return repository.findById(itemId).orElseThrow(ItemImgNotFoundException::new);
+        return repository.findById(itemId).orElseThrow(ItemNotFoundException::new);
     }
 
     public static Order findExistingOrder(OrderRepository repository, Long orderId){

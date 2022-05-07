@@ -1,6 +1,7 @@
 package com.growing.sgh.domain.item.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.growing.sgh.domain.category.entity.Category;
 import com.growing.sgh.domain.item.entity.Item;
 import com.growing.sgh.domain.item.entity.ItemSellStatus;
 import lombok.AllArgsConstructor;
@@ -40,10 +41,11 @@ public class ItemDto {
 
     @Builder
     public ItemDto(Long id, String itemNm, Integer price, Integer stockNumber,
-                   String description, ItemSellStatus itemSellStatus, List<ItemImgDto> itemImgDtoList) {
+                   String description, Long categoryId, ItemSellStatus itemSellStatus, List<ItemImgDto> itemImgDtoList) {
         this.id = id;
         this.itemNm = itemNm;
         this.price = price;
+        this.categoryId = categoryId;
         this.stockNumber = stockNumber;
         this.description = description;
         this.itemSellStatus = itemSellStatus;
@@ -58,6 +60,7 @@ public class ItemDto {
                 .stockNumber(registerDto.getStockNumber())
                 .description(registerDto.getDescription())
                 .itemSellStatus(registerDto.getItemSellStatus())
+                .category(new Category())
                 .build();
     }
 

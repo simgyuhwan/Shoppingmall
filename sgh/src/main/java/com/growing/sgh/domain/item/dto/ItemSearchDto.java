@@ -2,6 +2,7 @@ package com.growing.sgh.domain.item.dto;
 
 import com.growing.sgh.domain.item.entity.ItemSellStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,4 +26,14 @@ public class ItemSearchDto {
     private Integer minPrice;
 
     private String searchQuery = "";
+
+    @Builder
+    public ItemSearchDto(String searchDateType, ItemSellStatus searchSellStatus, String searchBy, Integer maxPrice, Integer minPrice, String searchQuery) {
+        this.searchDateType = searchDateType;
+        this.searchSellStatus = searchSellStatus;
+        this.searchBy = searchBy;
+        this.maxPrice = maxPrice;
+        this.minPrice = minPrice;
+        this.searchQuery = searchQuery;
+    }
 }

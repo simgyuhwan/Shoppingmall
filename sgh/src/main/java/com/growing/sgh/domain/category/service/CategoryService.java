@@ -35,6 +35,9 @@ public class CategoryService {
         categoryRepository.delete(categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new));
     }
 
+    public Category getCategory(Long categoryId){
+        return categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+    }
 
     public void categoryUpdate(Long categoryId, CategoryDto categoryDto) {
         Category category = ServiceFindHelper.findExistingCategory(categoryRepository, categoryId);
