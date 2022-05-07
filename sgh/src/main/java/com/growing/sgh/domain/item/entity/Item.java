@@ -60,12 +60,13 @@ public class Item extends BaseEntity {
         this.stockNumber += stockNumber;
     }
 
-    public void updateItem(ItemDto itemDto){
+    public void updateItem(ItemDto itemDto, Category category){
         this.itemNm = itemDto.getItemNm();
         this.description = itemDto.getDescription();
         this.stockNumber = itemDto.getStockNumber();
         this.price = itemDto.getPrice();
         this.itemSellStatus = itemDto.getItemSellStatus();
+        this.category = category;
     }
 
     public void updateCategory(Category category){

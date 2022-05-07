@@ -178,6 +178,21 @@ class ItemRepositoryTest {
         assertThat(itemPage.getTotalElements()).isEqualTo(3);
     }
 
+    @Test
+    @DisplayName("상품 이름 조회 테스트")
+    void findByItemNmTest(){
+        //given
+        Item item = createItem();
+        itemRepository.save(item);
+        clear();
+
+        //when
+        Item findItem = itemRepository.findByItemNm(item.getItemNm());
+
+        //then
+        assertThat(findItem.getItemNm()).isEqualTo(item.getItemNm());
+    }
+
     private void injectSearchItems(){
         for(int i=0; i<5; i++){
             itemRepository.save(Item.builder()

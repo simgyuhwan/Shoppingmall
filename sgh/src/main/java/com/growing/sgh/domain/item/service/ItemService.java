@@ -1,5 +1,6 @@
 package com.growing.sgh.domain.item.service;
 
+import com.growing.sgh.domain.category.entity.Category;
 import com.growing.sgh.domain.category.repository.CategoryRepository;
 import com.growing.sgh.domain.item.dto.ItemDto;
 import com.growing.sgh.domain.item.dto.ItemSearchDto;
@@ -28,21 +29,20 @@ public class ItemService {
     private final ItemImgService itemImgService;
     private final CategoryRepository categoryRepository;
 
-    public void itemRegister(ItemDto registerItemDto, List<MultipartFile> itemImgList) throws IOException {
+    public void itemRegister(ItemDto registerItemDto, List<MultipartFile> itemImgList, Category category) throws IOException {
         Item item = ItemDto.toEntity(registerItemDto);
-        changeCategory(registerItemDto, item);
-        itemRepository.save(item);
-        itemImgService.itemImgRegister(item, itemImgList);
+        item.updateCategory(category);
+        Item saveItem = itemRepository.save(item);
+        itemImgService.itemImgRegister(saveItem, itemImgList);
     }
 
     public void itemDelete(Long itemId){
         itemRepository.delete(itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new));
     }
 
-    public Item itemUpdate(Long itemId,ItemDto updateItemDto) throws IOException {
+    public Item itemUpdate(Long itemId,ItemDto updateItemDto, Category category) throws IOException {
         Item item = ServiceFindHelper.findExistingItem(itemRepository, itemId);
-        item.updateItem(updateItemDto);
-        if(!item.compareCategoryId(updateItemDto.getCategoryId())) changeCategory(updateItemDto, item);
+        item.updateItem(updateItemDto, category);
         return item;
     }
 

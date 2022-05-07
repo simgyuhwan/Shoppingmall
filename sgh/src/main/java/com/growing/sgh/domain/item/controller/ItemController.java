@@ -1,6 +1,7 @@
 package com.growing.sgh.domain.item.controller;
 
 import com.growing.sgh.common.response.Response;
+import com.growing.sgh.domain.category.service.CategoryService;
 import com.growing.sgh.domain.item.dto.ItemDto;
 import com.growing.sgh.domain.item.dto.ItemImgDto;
 import com.growing.sgh.domain.item.dto.ItemSearchDto;
@@ -33,13 +34,14 @@ public class ItemController {
 
     private final ItemService itemService;
     private final ItemImgService itemImgService;
+    private final CategoryService categoryService;
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public Response register(@Validated @RequestBody ItemDto itemDto,
                              @Parameter(hidden = true) @RequestPart("itemImgFile")List<MultipartFile> itemImgList) throws IOException {
         validateImgFile(itemImgList);
-        itemService.itemRegister(itemDto, itemImgList);
+        itemService.itemRegister(itemDto, itemImgList, categoryService.getCategory(itemDto.getCategoryId()));
         return success();
     }
 
@@ -55,7 +57,7 @@ public class ItemController {
     public Response update(@PathVariable Long itemId, @Validated @RequestBody ItemDto itemDto,
                           @Parameter(hidden = true) @RequestPart("itemImgFile") List<MultipartFile> itemImgList) throws IOException {
         validateImgFile(itemImgList);
-        Item item = itemService.itemUpdate(itemId, itemDto);
+        Item item = itemService.itemUpdate(itemId, itemDto,categoryService.getCategory(itemDto.getCategoryId()));
         return success(ItemDto.of(item,itemImgService.itemImgUpdate(item,
                 itemImgList).stream().map(itemImg -> ItemImgDto.of(itemImg)).collect(Collectors.toList())));
     }

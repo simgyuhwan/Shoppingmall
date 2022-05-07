@@ -13,6 +13,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class FileService {
+
     public String uploadFile(String uploadPath, String originalFileName, byte[] fileDate) throws IOException {
         UUID uuid = UUID.randomUUID();
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
@@ -33,6 +34,5 @@ public class FileService {
         }else {
             log.info("파일이 존재하지 않습니다.");
         }
-
     }
 }

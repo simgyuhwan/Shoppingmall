@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Category extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +39,7 @@ public class Category extends BaseEntity {
         this.parent = parent;
         this.depth = depth;
     }
+
 
     public void changeParent(Category parent){
         this.parent = parent;
