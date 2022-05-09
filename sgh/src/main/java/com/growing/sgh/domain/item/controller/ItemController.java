@@ -38,7 +38,7 @@ public class ItemController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response register(@Validated @RequestBody ItemDto itemDto,
+    public Response register(@Validated ItemDto itemDto,
                              @Parameter(hidden = true) @RequestPart("itemImgFile")List<MultipartFile> itemImgList) throws IOException {
         validateImgFile(itemImgList);
         itemService.itemRegister(itemDto, itemImgList, categoryService.getCategory(itemDto.getCategoryId()));
@@ -69,7 +69,7 @@ public class ItemController {
                 itemImgService.getItemImgs(itemId).stream().map(ItemImg -> ItemImgDto.of(ItemImg)).collect(Collectors.toList())));
     }
 
-    @GetMapping("/{page}")
+    @GetMapping("/total/{page}")
     @ResponseStatus(HttpStatus.OK)
     public Response searchItems(@PathVariable("page")Optional<Integer> page, @RequestBody ItemSearchDto itemSearchDto){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
@@ -79,6 +79,4 @@ public class ItemController {
     private void validateImgFile(@Parameter(hidden = true) List<MultipartFile> itemImgList) {
         if(itemImgList.get(0).isEmpty()) throw new RegisterImgNotExistsException();
     }
-
-
 }

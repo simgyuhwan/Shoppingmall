@@ -136,9 +136,6 @@ class ItemImgRepositoryTest {
         assertThat(itemImg.getImgName()).isEqualTo(findItemImg.getImgName());
     }
 
-
-
-
     private ItemImg createItemImg(){
         return new ItemImg("imageName", "oriImgName",
                 "imgUrl","Y", item);

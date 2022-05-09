@@ -1,10 +1,7 @@
 package com.growing.sgh.domain.item.entity;
 
 import com.growing.sgh.domain.member.entity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -36,6 +33,14 @@ public class ItemImg extends BaseEntity {
     public ItemImg(Item item){
         this.item = item;
         this.repImgYn = "N";
+    }
+
+    @Builder
+    public ItemImg(String imgName, String oriImgName, String imgUrl, String repImgYn){
+        this.imgName = imgName;
+        this.oriImgName = oriImgName;
+        this.repImgYn = repImgYn;
+        this.imgUrl = imgUrl;
     }
 
     public ItemImg(String imgName, String oriImgName, String imgUrl, String repImgYn, Item item) {
