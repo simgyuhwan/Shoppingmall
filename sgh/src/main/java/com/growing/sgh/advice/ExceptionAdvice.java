@@ -56,13 +56,13 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(ItemImgFileNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response ItemImgFileNotFoundException(ItemImgFileNotFoundException e){
         return Response.failure(400, "이미지 파일이 존재하지 않습니다.");
     }
 
     @ExceptionHandler(ItemNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response ItemNotFoundException(ItemNotFoundException e){
         return Response.failure(400, "등록된 상품이 아닙니다.");
     }

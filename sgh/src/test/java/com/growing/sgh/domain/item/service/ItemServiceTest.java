@@ -46,10 +46,7 @@ class ItemServiceTest {
     @InjectMocks ItemService itemService;
     @Mock ItemRepository itemRepository;
     @Mock ItemImgService itemImgService;
-    @Mock CategoryRepository categoryRepository;
     @Mock ServiceFindHelper serviceFindHelper;
-    @Mock Item item;
-    @Mock Category category;
     @PersistenceContext
     EntityManager em;
 
@@ -76,6 +73,7 @@ class ItemServiceTest {
         //then
         verify(itemRepository).findById(anyLong());
     }
+
 
     private ItemDto createItemDto(){
         return ItemDto.builder()

@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,16 +24,16 @@ public class ItemDto {
     @NotBlank(message = "상품명은 필수 입력 값입니다.")
     private String itemNm;
 
-    @NotBlank(message = "상품 가격은 필수 입력 값입니다.")
+    @NotNull(message = "상품 가격은 필수 입력 값입니다.")
     private Integer price;
 
-    @NotBlank(message = "재고는 필수 입력 값입니다.")
+    @NotNull(message = "재고는 필수 입력 값입니다.")
     private Integer stockNumber;
 
     @NotBlank(message = "상품 상세 정보는 필수 입력 값입니다.")
     private String description;
 
-    @NotBlank(message = "카테고리는 반드시 선택해주세요.")
+    @NotNull(message = "카테고리는 반드시 선택해주세요.")
     private Long categoryId;
 
     @JsonProperty("itemSellStatus")
